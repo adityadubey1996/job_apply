@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: job_applier_server
     ports:
-      - "3000:3000" # Expose server on localhost:3000
+      - "8080:8080" # Expose server on localhost:3000
     volumes:
       - ./job_applier_server:/app # Map local server code for hot reloading
     networks:
