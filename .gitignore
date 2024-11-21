@@ -5,21 +5,23 @@ pnpm-lock.json
 
 # Ignore generated files
 generated_resume/
+generated_resumes/
+temp_yamls/
+generated_yamls/
 
 __pycache__/
 .DS_Store
 
 # Ignore JSON files
-*.json
 
 *.env
 
 # Ignore React/Vite build artifacts
 job_applier/dist/
 job_applier/node_modules/
-job_applier/vite.config.js
 
 # Ignore Node.js project build artifacts
 job_applier_server/dist/
 job_applier_server/node_modules/
-job_applier_server/
+
+job_applier_server/config/*.json

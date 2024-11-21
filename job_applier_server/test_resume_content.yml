@@ -1,0 +1,288 @@
+ATS_Score_Check:
+  improvement_suggestions:
+    - Emphasize more on action verbs in the key responsibilities section.
+    - Consider rephrasing the professional summary to focus more on achievements and
+      quantifiable results.
+    - Incorporate more relevant keywords from the job description in the skills section.
+  score: 80
+achievements:
+  - description:
+      Built and implemented an in-house AI-based transcription service that
+      significantly improved call data processing and analysis capabilities.
+    name: Developed AI-Based Transcription Service
+  - description:
+      Successfully expanded the development team from 3 to 14 members, fostering
+      an Agile environment and improving project delivery.
+    name: Team Leadership and Expansion
+certifications:
+  - C1
+education_details:
+  - courses:
+      Financial Management: "4"
+      Information Theory and Inference: "4"
+    degree: M.tech Appropriate Technology and Entrepreneurship Practices
+    field_of_study: Technology and Entrepreneurship
+    gpa: 3/4
+    graduation_year: "2019"
+    university: National Institute of Technology
+experience_details:
+  - company: HeyCoach
+    employment_period: 12/2023 - 07/2024
+    industry: Technology
+    key_responsibilities:
+      - Engineered team expansion from 3 to 14 members, tripling development capacity
+        and ensuring rapid scalability to meet growing business demands.
+      - Led Agile project management across all phases including requirements gathering,
+        prototype design, development, testing, and deployment, delivering high-quality
+        software solutions within deadlines.
+      - Developed a Kotlin-based mobile application with advanced call recording and transcription
+        features to improve sales team efficiency and enhance selling strategies.
+      - Implemented GitHub Actions for CI/CD pipelines, automating deployment processes
+        and improving operational efficiency by 30%.
+      - Devised and integrated caching strategies, significantly reducing read operations
+        and infrastructure costs, allowing the system to scale from 30 to over 1000 users.
+      - Mentored junior developers, transforming recent graduates into self-reliant contributors,
+        reducing oversight and enabling a more autonomous team structure.
+    location: Bengaluru
+    position: Tech Lead
+    skills_acquired:
+      - Team Management
+      - Agile Methodologies
+      - Mobile App Development
+      - CI/CD Automation
+      - Sales Optimization Tools
+      - NodeJS
+      - AWS EC2
+      - Docker
+      - Github Actions
+      - Project Management
+      - Jira
+      - Java
+      - Kotlin
+      - Python
+      - AI Engineering
+      - Kafka
+      - Rabbit MQ
+      - Infrastructure
+  - company: W Energy
+    employment_period: 05/2021 - 12/2023
+    industry: Technology
+    key_responsibilities:
+      - Led the development team to transition the legacy application to Flutter, redesigning
+        the structure and UI to ensure smooth migration and enhanced user experience.
+      - Integrated Jenkins for CI/CD pipelines, automating build and deployment processes
+        to reduce manual effort and increase code quality through consistent version control
+        practices.
+      - Developed essential CRUD functionalities for user and asset management, enabling
+        efficient bulk data operations and optimizing load times by 20%.
+      - Integrated AWS Cognito for user authentication, ensuring a secure and scalable
+        authentication mechanism, compliant with GDPR standards.
+      - Worked on mid-stream application development for logistics, improving operational
+        efficiency for drivers and logistics management.
+    location: Bengaluru
+    position: Software Engineer
+    skills_acquired:
+      - Flutter
+      - CI/CD Pipelines
+      - AWS Cognito
+      - User Management Systems
+      - Application Optimization
+      - AngularJS
+      - VueJS
+      - React Native
+      - Jenkins
+      - GraphQL
+      - AWS DynamoDB
+      - AWS EC2
+      - AWS ElasticDB
+      - Dart
+      - Xcode
+  - company: Sugoi Labs Pvt/LTD
+    employment_period: 10/2020 - 05/2021
+    industry: Technology
+    key_responsibilities:
+      - Developed 'Super Like' and 'Like' functionalities for the Rekindle dating app
+        using React Native, enhancing user engagement and retention through dynamic interactions.
+      - Constructed an admin panel for user management in React JS, incorporating a support
+        ticket system for streamlined issue resolution, resulting in improved response
+        times.
+      - Optimized app performance and introduced subscription management features, ensuring
+        seamless user experience while handling payment failures efficiently.
+      - Implemented a secure user registration and login system with React JS, integrating
+        super admin functionalities for comprehensive system control and management.
+      - Collaborated on a web platform for Carwashsurveys, enhancing survey operations
+        through a user-friendly interface and robust backend system.
+    location: Bengaluru
+    position: Product Development Engineer
+    skills_acquired:
+      - React Native
+      - Web Development
+      - User Management Systems
+      - Backend System Development
+      - Performance Optimization
+      - ReactJS
+      - Third Party Integration
+      - NodeJS
+      - Stripe Integration
+  - company: TedRooX Technologies
+    employment_period: 01/2020 - 10/2020
+    industry: Technology
+    key_responsibilities:
+      - Designed a 3D visualization feature for clothing styles, enabling users to interact
+        with products through zoom, rotation, and customization, providing a more immersive
+        shopping experience.
+      - Implemented a robust fabric selection tool that allowed users to choose fabric
+        colors and patterns in 3D, improving the customization options and overall shopping
+        experience.
+      - Developed a user-friendly order placement system that included customization features,
+        streamlining the purchasing process and ensuring a seamless checkout experience.
+      - Built user profiles that captured customer preferences, order history, and measurements
+        to personalize the shopping experience and increase user engagement.
+      - Created a shopping cart system allowing for review and modification before checkout,
+        enhancing the overall user journey and satisfaction.
+    location: Bengaluru
+    position: Full Stack Developer
+    skills_acquired:
+      - 3D Visualization
+      - E-commerce Development
+      - Frontend and Backend Integration
+      - User Experience Design
+      - JavaScript
+      - HTML
+      - CSS
+      - JQuery
+      - ThreeJS
+      - ReactJS
+      - GSAP
+      - Framer Motion
+  - company: CueMath
+    employment_period: 06/2019 - 12/2019
+    industry: Education Technology
+    key_responsibilities:
+      - Developed a Python-based GUI application to automate marketing tasks such as WhatsApp
+        messaging and internal tool updates, significantly improving operational efficiency.
+      - Automated the data updating and report generation process for sales operations,
+        streamlining the workflow across multiple cities and reducing manual efforts by
+        40%.
+      - Collaborated closely with the technical team to resolve system escalations, ensuring
+        continuous service excellence and high reliability.
+      - Developed new features for internal tools that improved usability and functionality
+        for marketing and sales teams, enhancing productivity.
+    location: Bengaluru
+    position: Software Engineer Intern
+    skills_acquired:
+      - Python Development
+      - Automation Tools
+      - System Optimization
+      - Collaborative Problem Solving
+      - Python
+      - Django
+      - flask
+      - Tkinter
+languages:
+  - language: English
+    proficiency: Professional
+personal_information:
+  address: Harlur ambalipura road, Bengaluru
+  city: Bengaluru
+  country: India
+  date_of_birth: 05/01/1996
+  email: adityadubey1966@gmail.com
+  github: https://github.com/adityadubey1996
+  linkedin: https://www.linkedin.com/in/aditya-dubey-117380146/
+  name: Aditya
+  phone: "9176031690"
+  phone_prefix: "+91"
+  surname: Dubey
+professional_summary:
+  summary:
+    Highly motivated and experienced Full Stack Developer with a strong background
+    in ReactJS, JavaScript, and mobile app development. Proven track record of delivering
+    high-quality software solutions and leading teams to achieve exceptional results.
+projects:
+  - description:
+      Implemented AI-based transcription service for call logging, recording,
+      and analysis, using Python Flask API and Hugging Face Whisper model. Developed
+      a sales automation pipeline to verify transcripts against business-specific prompts,
+      improving call quality and eliminating incorrect selling.
+    link: https://github.com/adityadubey1996
+    name: Sales Application
+  - description:
+      Developed a multi-tenant SaaS product using Flutter, featuring over
+      100 unique functionalities such as location-based tracking and task resolution.
+      Integrated AWS Cognito for authentication and GraphQL for API interactions, scaling
+      to serve over 5000 users.
+    link: https://github.com/adityadubey1996
+    name: FSM Product Development
+  - description:
+      Enhanced both frontend and backend systems using React.js, AWS Lambda,
+      DynamoDB, and Elasticsearch. Implemented comprehensive CRUD operations and optimized
+      the system for scalability and performance.
+    link: https://github.com/adityadubey1996
+    name: FSM Web Application Optimization
+  - description:
+      Contributed to the full stack development of Mineo.io, a meeting platform
+      for investors and founders, utilizing React.js, Node.js, Express.js, and MongoDB.
+    link: https://www.mineo.io
+    name: Mineo.io
+  - description:
+      Developed a full stack mobile app using React Native and Node.js, featuring
+      real-time messaging and Stripe payment integration, with enhanced user engagement
+      through dynamic 'Super Like' and 'Like' functionalities.
+    link: https://www.rekindle.club/
+    name: Rekindle Dating App
+  - description:
+      Built a survey platform using React.js and Node.js, enabling QR code
+      distribution for survey redemption, data visualization, and seamless survey operations
+      management.
+    link: https://dev.carwashsurveys.com/login
+    name: Carwash Survey Website
+  - description:
+      Updated and optimized a logistics application for truckers, transitioning
+      from Angular.js v4 to v16, enhancing operational efficiency in tracking and task
+      management.
+    link: https://github.com/adityadubey1996
+    name: Toll Tagger Application
+  - description:
+      Utilized Hugging Face's open-source model to implement a live transcription
+      tool for the sales application, enhancing data capture and analysis in real time.
+    link: https://github.com/adityadubey1996
+    name: AI Tool for Live Transcribing
+  - description:
+      Developed a CRM system for over 100 sales personnel, handling a million
+      data entries with React.js, Node.js, Express, and MySQL. Integrated Redis for
+      caching, implemented real-time lead distribution via WebSockets, and visualized
+      data with Chart.js.
+    link: https://github.com/adityadubey1996
+    name: Sales CRM
+  - description:
+      Developed an interactive learning platform using React.js and Ruby
+      on Rails, featuring a code editor, automated testing with fuzzy logic, CRUD operations
+      for question management, and video streaming capabilities for live classes.
+    link: https://github.com/adityadubey1996
+    name: Learning Portal
+skills:
+  - ReactJS
+  - JavaScript
+  - React Native
+  - Redux
+  - AWS
+  - API Integrations
+  - Mobile App Development
+  - Team Management
+  - Agile Methodologies
+  - CI/CD Automation
+  - Sales Optimization Tools
+  - NodeJS
+  - AWS EC2
+  - Docker
+  - Github Actions
+  - Project Management
+  - Jira
+  - Java
+  - Kotlin
+  - Python
+  - AI Engineering
+  - Kafka
+  - Rabbit MQ
+  - Infrastructure

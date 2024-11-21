@@ -1,0 +1,19 @@
+indexes:
+  - kind: Profile
+    properties:
+      - name: userId
+        direction: desc
+      - name: createdAt
+        direction: desc
+  - kind: Resume
+    properties:
+      - name: userId
+        direction: desc
+      - name: createdAt
+        direction: desc
+  - kind: User
+    properties:
+      - name: email
+        direction: asc
+      - name: createdAt
+        direction: desc
