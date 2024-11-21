@@ -1,0 +1,22 @@
+# Ignore Node.js project dependencies
+node_modules/
+pnpm-lock.yaml
+pnpm-lock.json
+
+# Ignore generated files
+generated_resume/
+
+# Ignore JSON files
+*.json
+
+*.env
+
+# Ignore React/Vite build artifacts
+job_applier/dist/
+job_applier/node_modules/
+job_applier/vite.config.js
+
+# Ignore Node.js project build artifacts
+job_applier_server/dist/
+job_applier_server/node_modules/
+job_applier_server/
