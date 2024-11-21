@@ -1,0 +1,9 @@
+version: "3"
+services:
+  selenium-chrome:
+    image: selenium/standalone-chrome:4.0.0
+    container_name: selenium-chrome
+    platform: linux/amd64 # Use x86_64 version of the image
+    ports:
+      - "4444:4444"
+    shm_size: "2g"

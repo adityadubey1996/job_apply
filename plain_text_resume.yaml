@@ -1,0 +1,243 @@
+personal_information:
+  name: "Aditya"
+  surname: "Dubey"
+  date_of_birth: "05/01/1996" # Add your date of birth here
+  country: "India"
+  city: "Bengaluru"
+  address: "Harlur ambalipura road, Bengaluru" # Add your full address here
+  phone_prefix: "+91"
+  phone: "9176031690" # Add your phone number here
+  email: "adityadubey1966@gmail.com" # Add your email address here
+  github: "https://github.com/adityadubey1996" # Add your GitHub URL here
+  linkedin: "https://www.linkedin.com/in/aditya-dubey-117380146/"
+
+education_details:
+  - degree: "M.tech Appropriate Technology and Entrepreneurship Practices"
+    university: "National Institute of Technology"
+    gpa: "3/4" # Add your GPA here
+    graduation_year: "2019"
+    field_of_study: "Technology and Entrepreneurship"
+    courses:
+      Information Theory and Inference: "4"
+      Financial Management: "4"
+
+experience_details:
+  - position: "Tech Lead"
+    company: "HeyCoach"
+    employment_period: "12/2023 - 07/2024"
+    location: "Bengaluru"
+    industry: "Technology"
+    key_responsibilities:
+      - "Engineered team expansion from 3 to 14 members, tripling development capacity and ensuring rapid scalability to meet growing business demands."
+      - "Led Agile project management across all phases including requirements gathering, prototype design, development, testing, and deployment, delivering high-quality software solutions within deadlines."
+      - "Developed a Kotlin-based mobile application with advanced call recording and transcription features to improve sales team efficiency and enhance selling strategies."
+      - "Implemented GitHub Actions for CI/CD pipelines, automating deployment processes and improving operational efficiency by 30%."
+      - "Devised and integrated caching strategies, significantly reducing read operations and infrastructure costs, allowing the system to scale from 30 to over 1000 users."
+      - "Mentored junior developers, transforming recent graduates into self-reliant contributors, reducing oversight and enabling a more autonomous team structure."
+    skills_acquired:
+      - "Team Management"
+      - "Agile Methodologies"
+      - "Mobile App Development"
+      - "CI/CD Automation"
+      - "Sales Optimization Tools"
+      - "NodeJS"
+      - "AWS EC2"
+      - "Docker"
+      - "Github Actions"
+      - "Project Management"
+      - "Jira"
+      - "Java"
+      - "Kotlin"
+      - "Python"
+      - "AI Engineering"
+      - "Kafka"
+      - "Rabbit MQ"
+      - "Infrastructure"
+
+  - position: "Software Engineer"
+    company: "W Energy"
+    employment_period: "05/2021 - 12/2023"
+    location: "Bengaluru"
+    industry: "Technology"
+    key_responsibilities:
+      - "Led the development team to transition the legacy application to Flutter, redesigning the structure and UI to ensure smooth migration and enhanced user experience."
+      - "Integrated Jenkins for CI/CD pipelines, automating build and deployment processes to reduce manual effort and increase code quality through consistent version control practices."
+      - "Developed essential CRUD functionalities for user and asset management, enabling efficient bulk data operations and optimizing load times by 20%."
+      - "Integrated AWS Cognito for user authentication, ensuring a secure and scalable authentication mechanism, compliant with GDPR standards."
+      - "Worked on mid-stream application development for logistics, improving operational efficiency for drivers and logistics management."
+    skills_acquired:
+      - "Flutter"
+      - "CI/CD Pipelines"
+      - "AWS Cognito"
+      - "User Management Systems"
+      - "Application Optimization"
+      - "AngularJS"
+      - "VueJS"
+      - "React Native"
+      - "Jenkins"
+      - "GraphQL"
+      - "AWS DynamoDB"
+      - "AWS EC2"
+      - "AWS ElasticDB"
+      - "Dart"
+      - "Xcode"
+
+  - position: "Product Development Engineer"
+    company: "Sugoi Labs Pvt/LTD"
+    employment_period: "10/2020 - 05/2021"
+    location: "Bengaluru"
+    industry: "Technology"
+    key_responsibilities:
+      - "Developed 'Super Like' and 'Like' functionalities for the Rekindle dating app using React Native, enhancing user engagement and retention through dynamic interactions."
+      - "Constructed an admin panel for user management in React JS, incorporating a support ticket system for streamlined issue resolution, resulting in improved response times."
+      - "Optimized app performance and introduced subscription management features, ensuring seamless user experience while handling payment failures efficiently."
+      - "Implemented a secure user registration and login system with React JS, integrating super admin functionalities for comprehensive system control and management."
+      - "Collaborated on a web platform for Carwashsurveys, enhancing survey operations through a user-friendly interface and robust backend system."
+    skills_acquired:
+      - "React Native"
+      - "Web Development"
+      - "User Management Systems"
+      - "Backend System Development"
+      - "Performance Optimization"
+      - "ReactJS"
+      - "Third Party Integration"
+      - "NodeJS"
+      - "Stripe Integration"
+
+  - position: "Full Stack Developer"
+    company: "TedRooX Technologies"
+    employment_period: "01/2020 - 10/2020"
+    location: "Bengaluru"
+    industry: "Technology"
+    key_responsibilities:
+      - "Designed a 3D visualization feature for clothing styles, enabling users to interact with products through zoom, rotation, and customization, providing a more immersive shopping experience."
+      - "Implemented a robust fabric selection tool that allowed users to choose fabric colors and patterns in 3D, improving the customization options and overall shopping experience."
+      - "Developed a user-friendly order placement system that included customization features, streamlining the purchasing process and ensuring a seamless checkout experience."
+      - "Built user profiles that captured customer preferences, order history, and measurements to personalize the shopping experience and increase user engagement."
+      - "Created a shopping cart system allowing for review and modification before checkout, enhancing the overall user journey and satisfaction."
+    skills_acquired:
+      - "3D Visualization"
+      - "E-commerce Development"
+      - "Frontend and Backend Integration"
+      - "User Experience Design"
+      - "Javacript"
+      - "HTML"
+      - "CSS"
+      - "JQuery"
+      - "ThreeJS"
+      - "ReactJS"
+      - "GSAP"
+      - "Framer Motion"
+
+  - position: "Software Engineer Intern"
+    company: "CueMath"
+    employment_period: "06/2019 - 12/2019"
+    location: "Bengaluru"
+    industry: "Education Technology"
+    key_responsibilities:
+      - "Developed a Python-based GUI application to automate marketing tasks such as WhatsApp messaging and internal tool updates, significantly improving operational efficiency."
+      - "Automated the data updating and report generation process for sales operations, streamlining the workflow across multiple cities and reducing manual efforts by 40%."
+      - "Collaborated closely with the technical team to resolve system escalations, ensuring continuous service excellence and high reliability."
+      - "Developed new features for internal tools that improved usability and functionality for marketing and sales teams, enhancing productivity."
+    skills_acquired:
+      - "Python Development"
+      - "Automation Tools"
+      - "System Optimization"
+      - "Collaborative Problem Solving"
+      - "Python"
+      - "Django"
+      - "flask"
+      - "Tkinter"
+
+projects:
+  - name: "Sales Application"
+    description: "Implemented AI-based transcription service for call logging, recording, and analysis, using Python Flask API and Hugging Face Whisper model. Developed a sales automation pipeline to verify transcripts against business-specific prompts, improving call quality and eliminating incorrect selling."
+    link: "https://github.com/adityadubey1996"
+
+  - name: "FSM Product Development"
+    description: "Developed a multi-tenant SaaS product using Flutter, featuring over 100 unique functionalities such as location-based tracking and task resolution. Integrated AWS Cognito for authentication and GraphQL for API interactions, scaling to serve over 5000 users."
+    link: "https://github.com/adityadubey1996"
+
+  - name: "FSM Web Application Optimization"
+    description: "Enhanced both frontend and backend systems using React.js, AWS Lambda, DynamoDB, and Elasticsearch. Implemented comprehensive CRUD operations and optimized the system for scalability and performance."
+    link: "https://github.com/adityadubey1996"
+
+  - name: "Mineo.io"
+    description: "Contributed to the full stack development of Mineo.io, a meeting platform for investors and founders, utilizing React.js, Node.js, Express.js, and MongoDB."
+    link: "https://www.mineo.io"
+
+  - name: "Rekindle Dating App"
+    description: "Developed a full stack mobile app using React Native and Node.js, featuring real-time messaging and Stripe payment integration, with enhanced user engagement through dynamic 'Super Like' and 'Like' functionalities."
+    link: "https://www.rekindle.club/"
+
+  - name: "Carwash Survey Website"
+    description: "Built a survey platform using React.js and Node.js, enabling QR code distribution for survey redemption, data visualization, and seamless survey operations management."
+    link: "https://dev.carwashsurveys.com/login"
+
+  - name: "Toll Tagger Application"
+    description: "Updated and optimized a logistics application for truckers, transitioning from Angular.js v4 to v16, enhancing operational efficiency in tracking and task management."
+    link: "https://github.com/adityadubey1996"
+
+  - name: "AI Tool for Live Transcribing"
+    description: "Utilized Hugging Face's open-source model to implement a live transcription tool for the sales application, enhancing data capture and analysis in real time."
+    link: "https://github.com/adityadubey1996"
+
+  - name: "Sales CRM"
+    description: "Developed a CRM system for over 100 sales personnel, handling a million data entries with React.js, Node.js, Express, and MySQL. Integrated Redis for caching, implemented real-time lead distribution via WebSockets, and visualized data with Chart.js."
+    link: "https://github.com/adityadubey1996"
+
+  - name: "Learning Portal"
+    description: "Developed an interactive learning platform using React.js and Ruby on Rails, featuring a code editor, automated testing with fuzzy logic, CRUD operations for question management, and video streaming capabilities for live classes."
+    link: "https://github.com/adityadubey1996"
+
+achievements:
+  - name: "Developed AI-Based Transcription Service"
+    description: "Built and implemented an in-house AI-based transcription service that significantly improved call data processing and analysis capabilities."
+
+  - name: "Team Leadership and Expansion"
+    description: "Successfully expanded the development team from 3 to 14 members, fostering an Agile environment and improving project delivery."
+
+certifications:
+  - "C1"
+
+languages:
+  - language: "English"
+    proficiency: "Professional"
+
+interests:
+  - "Software Development"
+  - "AI and Machine Learning"
+  - "Mobile App Development"
+  - "Leadership and Mentorship"
+  - "Agile Methodologies"
+
+availability:
+  notice_period: "immediately" # Add your notice period here
+
+salary_expectations:
+  salary_range_usd: "50000" # Add expected salary range
+
+self_identification:
+  gender: "Male" # Add gender if applicable
+  pronouns: "He" # Add pronouns if applicable
+  veteran: "No" # Add veteran status if applicable
+  disability: "No" # Add disability status if applicable
+  ethnicity: "Asian" # Add ethnicity if applicable
+
+legal_authorization:
+  eu_work_authorization: "Yes"
+  us_work_authorization: "Yes"
+  requires_us_visa: "Yes"
+  requires_us_sponsorship: "Yes"
+  requires_eu_visa: "Yes"
+  legally_allowed_to_work_in_eu: "Yes"
+  legally_allowed_to_work_in_us: "Yes"
+  requires_eu_sponsorship: "Yes"
+
+work_preferences:
+  remote_work: "Yes" # Add your preference for remote work
+  in_person_work: "No" # Add your preference for in-person work
+  open_to_relocation: "No" # Add your relocation preference
+  willing_to_complete_assessments: "Yes" # Add assessment willingness
+  willing_to_undergo_drug_tests: "Yes" # Add your preference
+  willing_to_undergo_background_checks: "Yes" # Add your preference

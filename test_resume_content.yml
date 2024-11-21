@@ -1,0 +1,120 @@
+personal_information:
+  name: "John"
+  surname: "Doe"
+  date_of_birth: "01/01/1990"
+  country: "USA"
+  city: "New York"
+  address: "123 Main St, New York, NY 10001"
+  phone_prefix: "+1"
+  phone: "1234567890"
+  email: "john.doe@example.com"
+  github: "https://github.com/johndoe"
+  linkedin: "https://www.linkedin.com/in/johndoe/"
+
+education_details:
+  - degree: "Bachelor of Science in Computer Science"
+    university: "University of California"
+    gpa: "3.8/4.0"
+    graduation_year: "2012"
+    field_of_study: "Computer Science"
+    courses:
+      Algorithms: "A"
+      Data_Structures: "A"
+      Machine_Learning: "A"
+
+experience_details:
+  - position: "Senior Software Engineer"
+    company: "Tech Solutions Inc."
+    employment_period: "01/2018 - Present"
+    location: "New York, NY"
+    industry: "Technology"
+    key_responsibilities:
+      - Developed scalable web applications using React, Node.js, and MongoDB.
+      - Led a team of 5 engineers in agile development, ensuring project milestones were met on time.
+      - Integrated third-party APIs for enhanced functionality and efficiency.
+      - Conducted code reviews and provided mentorship to junior developers.
+    skills_acquired:
+      - "React"
+      - "Node.js"
+      - "MongoDB"
+      - "Agile Development"
+      - "Leadership"
+      - "API Integration"
+
+  - position: "Software Engineer"
+    company: "Innovatech"
+    employment_period: "06/2014 - 12/2017"
+    location: "San Francisco, CA"
+    industry: "Technology"
+    key_responsibilities:
+      - Built and maintained RESTful APIs with Python and Flask.
+      - Improved application performance, resulting in a 30% reduction in load time.
+      - Collaborated with cross-functional teams to ensure product quality.
+      - Developed automated test suites to streamline QA processes.
+    skills_acquired:
+      - "Python"
+      - "Flask"
+      - "API Development"
+      - "Performance Optimization"
+      - "Test Automation"
+
+projects:
+  - name: "E-commerce Platform"
+    description: "Developed a full-stack e-commerce platform with secure payment processing and product management."
+    link: "https://github.com/johndoe/ecommerce-platform"
+
+  - name: "Social Media Analytics Tool"
+    description: "Created a tool for analyzing social media trends using natural language processing and sentiment analysis."
+    link: "https://github.com/johndoe/social-media-analytics"
+
+achievements:
+  - name: "Published Research Paper on Machine Learning"
+    description: "Co-authored a paper on novel machine learning techniques, published in IEEE Transactions on Neural Networks."
+
+certifications:
+  - "AWS Certified Solutions Architect"
+  - "Certified ScrumMaster (CSM)"
+
+languages:
+  - language: "English"
+    proficiency: "Native"
+
+  - language: "Spanish"
+    proficiency: "Professional Working Proficiency"
+
+interests:
+  - "Machine Learning"
+  - "Software Development"
+  - "Open Source Contributions"
+  - "Traveling"
+
+availability:
+  notice_period: "2 weeks"
+
+salary_expectations:
+  salary_range_usd: "70000-90000"
+
+self_identification:
+  gender: "Male"
+  pronouns: "He/Him"
+  veteran: "No"
+  disability: "No"
+  ethnicity: "Caucasian"
+
+legal_authorization:
+  eu_work_authorization: "No"
+  us_work_authorization: "Yes"
+  requires_us_visa: "No"
+  requires_us_sponsorship: "No"
+  requires_eu_visa: "Yes"
+  legally_allowed_to_work_in_eu: "No"
+  legally_allowed_to_work_in_us: "Yes"
+  requires_eu_sponsorship: "Yes"
+
+work_preferences:
+  remote_work: "Yes"
+  in_person_work: "Yes"
+  open_to_relocation: "Yes"
+  willing_to_complete_assessments: "Yes"
+  willing_to_undergo_drug_tests: "Yes"
+  willing_to_undergo_background_checks: "Yes"

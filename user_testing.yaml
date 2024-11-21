@@ -1,0 +1,22 @@
+name: Jane
+surname: Doe
+title: Software Architect
+address: 1234 Sunset Blvd
+city: Metropolis
+country: USA
+phone: +1~(555)~123~4567
+email: jane.doe@example.com
+education:
+  - year: 2006-2010
+    degree: BSc in Computer Science
+    institution: Tech University
+    city: Metropolis
+    grade: Summa Cum Laude
+    description: Focus on distributed systems.
+jobs:
+  - year: 2010-2020
+    title: Lead Developer
+    employer: Innovative Tech Inc.
+    city: Metropolis
+    country: USA
+    description: Lead development teams on multiple high-profile projects, emphasizing scalable cloud solutions.

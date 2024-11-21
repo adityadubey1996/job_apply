@@ -1,0 +1,18 @@
+version: "3"
+services:
+  selenium-chrome:
+    image: selenium/standalone-chrome:4.0.0
+    container_name: selenium-chrome
+    ports:
+      - "4444:4444" # Expose port 4444 for Selenium WebDriver
+
+  python-app:
+    build:
+      context: . # Use current directory to build the Dockerfile
+    container_name: python-app
+    depends_on:
+      - selenium-chrome
+    environment:
+      - SELENIUM_URL=http://selenium-chrome:4444/wd/hub
+    volumes:
+      - .:/app # Mount current directory to /app in container

@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: ./job_applier_server
+      dockerfile: Dockerfile
+    container_name: job_applier_server
+    ports:
+      - "3000:3000" # Expose server on localhost:3000
+    volumes:
+      - ./job_applier_server:/app # Map local server code for hot reloading
+    networks:
+      - job_applier_network
+
+  client:
+    build:
+      context: ./job_applier
+      dockerfile: Dockerfile
+    container_name: job_applier_client
+    ports:
+      - "5173:5173" # Expose Vite dev server on localhost:5173
+    volumes:
+      - ./job_applier:/app # Map local client code for hot reloading
+    networks:
+      - job_applier_network
+
+networks:
+  job_applier_network:
+    driver: bridge

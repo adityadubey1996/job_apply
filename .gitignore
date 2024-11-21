@@ -6,6 +6,9 @@ pnpm-lock.json
 # Ignore generated files
 generated_resume/
 
+__pycache__/
+.DS_Store
+
 # Ignore JSON files
 *.json
 
