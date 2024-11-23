@@ -14,6 +14,7 @@ connectDB();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://your-frontend-domain.com",
+  "https://tailorcv.in",
 ];
 const allowedHeaders = ["Content-Type", "Authorization"];
 
