@@ -41,7 +41,7 @@ const cloudBucketService = {
     try {
       const corsConfiguration = [
         {
-          origin: ["http://localhost:5173"], // Replace with your allowed origins
+          origin: ["http://localhost:5173", "https://tailorcv.in"], // Replace with your allowed origins
           method: ["GET", "HEAD", "OPTIONS"], // HTTP methods to allow
           responseHeader: ["Content-Type"], // Allowed headers in the response
           maxAgeSeconds: 3600, // Cache preflight requests for 1 hour
