@@ -92,25 +92,9 @@ const RightComponent = ({ jobDescription, companyInfo }) => {
   return (
     <div
       ref={parentRef}
-      className="p-4 h-full flex flex-col items-center justify-between"
+      className="p-4 h-full flex flex-col items-center justify-center"
     >
-      <div
-        ref={pdfContainerRef}
-        className="w-full max-w-lg overflow-auto border border-gray-200 rounded-lg flex-grow"
-      >
-        <Document
-          file={
-            "https://ffe2e394b244ba54e8e6e18d6c6d60902416efa6733b101c7ed23f3-apidata.googleusercontent.com/download/storage/v1/b/user_bucket_job_applier/o/resumes%2F673b36cab47f4ce9fc5fb6b1%2F673b36cab47f4ce9fc5fb6b1_2024_11_18T12_45_02_855Z.pdf?jk=AXvcXDvT39DD4WfCzjMHDiljaaxTruYPA6_PgQSr_ixODIw69HTkRjvbSGEXbVo7tUXmPbQimEWdZqno1RpVXmmQBFZ05E5AYGARhKsSI14vlQRJu87LkENyAgd0VfC4WAchMLyu-MLi5For9pLF0D9mck8D6FgHkuZzj2-fjto6blaa0SeH8bBPgslepJmG6YxTqilAsxvK0iFkFM70VA_fu2FXONTkklq96Sf9EJGzuL6ME8r0_oaG0BOjD1ecz2sNC72soMiTjwOG4BMX3p0XIXjstnmW03HaTLV2C6c2jxsxBiSYVj8-jVFo1zRcGx_JEWfbleyQ47hVQuHlZ3k3dPLad-jTUqZ4yeLwFIxXOzYyfNIzivA2qjJWLtbHKUCu0_VF7qE4QuKnjYWlcim1sQ3dLyo-kuDipi9D0_LABLKAxiAaiG0NQLC_gp-5wHBOLteKJ31WLyUEUYA6duUiEKYjXEa7He9G9dtC9XQ6qWPPmdNuvPpi_RaMywmKeYMnBuHYNcfbQk3W8sBSZNrPqrjX1-TtKW1nPFJQqQQ_eo95rGGks61sorEEBWoKQ-FC63W8hi8u0jk2sL2Je1oPozGZU2z34HtDmZPtqOXh2WgzlI_WNxBrBFrRXgpl1bOCKPe_ttIJaIA5y8gvmyNYnOpjpa_xHi7j7aRp7rXtW76-V2AygRX_ZDB6W0ztRGoHpPX7cjVuIhxPorZmLu4wZcXY8VlSRt4R5-fTfQyEWylHTt_UTEjHA7U8ayWpliGwsu2MArDu60eXhK9aiUC_0LlNHNQx-cXLAb0EGnM2t94oSSIk8A3cRp9LyHYfYILxoHBvmYEBX1p7BUSiBuR2nytnDzmTh7IEzT6xyoKcZe7rpBgh5YXM7MjsMse6T7qKWPL8AIhOAJrhqy9zxl6h95JDsHKQdlvnQJxQV8fs3RBT3hLlDiElrcGl_2WbED2l4xPOtUlvt9-lZqQOqiW9Pa9IOy16pA-6ZRGzh5MShzhjV-vxmjtAR9VZ9WY5oMe8wTRPwSlwkQNjkWZNZpOzYAJIVsxuprGZy3lJP_9pslaKqltsj9jte5v5nSP-JM0fj8dKllhjC_kbCTB46lncU1knHunoT1e4uWv5VSSBkpgWkLg_3Kq9eohQ_CR-2iX6CHa2eeUA3ldNYVkgJstTOyAnMXKIB4STmP_xonheO8nyMECCqvTAtSiBBBnaQb6xWp80-iXpDreRdJ5DkNrlWkq9kmdY&isca=1"
-          }
-          onLoadSuccess={handlePdfLoadSuccess}
-          onLoadError={handlePdfLoadError}
-        >
-          {Array.from(new Array(numPages), (el, index) => (
-            <Page key={`page_${index + 1}`} pageNumber={index + 1} />
-          ))}
-        </Document>
-      </div>
-      {/* {state === "input" && (
+      {state === "input" && (
         <Button onClick={handleCreateResume} disabled={!validateInput()}>
           Create Resume
         </Button>
@@ -146,12 +130,12 @@ const RightComponent = ({ jobDescription, companyInfo }) => {
             ) : (
               <Spinner className="w-8 h-8" />
             )}
-          </div> */}
-      <Button className="mt-4" onClick={handleDownloadPdf}>
-        Download PDF
-      </Button>
-      {/* </> */}
-      {/* )} */}
+          </div>
+          <Button className="mt-4" onClick={handleDownloadPdf}>
+            Download PDF
+          </Button>
+        </>
+      )}
     </div>
   );
 };
