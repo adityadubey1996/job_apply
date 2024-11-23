@@ -178,7 +178,7 @@ export function RegisterForm() {
         >
           Login
         </Button>
-        <div className="relative">
+        {/* <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-gray-700" />
           </div>
@@ -187,8 +187,8 @@ export function RegisterForm() {
               Or continue with
             </span>
           </div>
-        </div>
-        <Button
+        </div> */}
+        {/* <Button
           variant="outline"
           className="w-full border-gray-700 text-white hover:bg-gray-800"
           onClick={() => toast({ title: "Google Sign-In clicked" })}
@@ -209,7 +209,7 @@ export function RegisterForm() {
             ></path>
           </svg>
           Google
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

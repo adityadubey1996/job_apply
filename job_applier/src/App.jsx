@@ -20,6 +20,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { setNavigate } from "./services/navigationService";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import LandingPage from "./pages/landingPage";
 // Wrapper to conditionally include sidebar
 const AppWrapper = () => {
   const navigate = useNavigate();
@@ -45,7 +46,8 @@ const AppWrapper = () => {
         }`}
       >
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<LandingPage />} />
+
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/profile" element={<Profile />} />
