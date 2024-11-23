@@ -42,10 +42,9 @@ class ResumeGenerator {
       );
       const data = yaml.parse(fileContent);
       let latexContent = `
-\\documentclass[11pt,a4paper,sans]{moderncv}
+\\documentclass[11pt,a4paper,sans,colorlinks=true,linkcolor=blue,pdfpagelabels=false]{moderncv}
 \\moderncvstyle{banking}
 \\moderncvcolor{blue}
-\\usepackage[colorlinks=true, linkcolor=blue, pdfpagelabels=false]{hyperref}
 \\usepackage[scale=0.8]{geometry}
 \\usepackage[utf8]{inputenc}
 
