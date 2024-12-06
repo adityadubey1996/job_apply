@@ -8,12 +8,9 @@ import {
 } from "react-router-dom";
 import AppSidebar from "./sideBar";
 import Profile from "./pages/Profile";
-import ViewProfile from "./pages/Profile/components/ViewProfile";
 import CustomizeResume from "./pages/CustomizeResume/CustomizeResume";
 import History from "./pages/History";
 import AISetup from "./pages/AISetup";
-import NoSelection from "./pages/NoSelection";
-import CreateProfile from "./pages/Profile/components/CreateProfile";
 import { LoginForm } from "./pages/Auth/login";
 import { RegisterForm } from "./pages/Auth/register";
 import { Toaster } from "@/components/ui/toaster";

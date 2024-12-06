@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import PasswordField from "../components/passwordFields";
 
 import axiosInstance from "../../api/axiosIntance";
 import { signup } from "../../api/api";
@@ -95,6 +96,7 @@ export function RegisterForm() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="surname"
@@ -130,20 +132,19 @@ export function RegisterForm() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-white">Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Enter your password"
-                      {...field}
-                      className="bg-gray-800 text-white border border-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </FormControl>
+                  <PasswordField
+                    id="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                    {...field} // Pass value, onChange, and onBlur
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -154,14 +155,12 @@ export function RegisterForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-white">Confirm Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Confirm your password"
-                      {...field}
-                      className="bg-gray-800 text-white border border-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </FormControl>
+                  <PasswordField
+                    id="confirmPassword"
+                    label="Confirm Password"
+                    placeholder="Re-enter your password"
+                    {...field} // Pass value, onChange, and onBlur
+                  />
                   <FormMessage />
                 </FormItem>
               )}

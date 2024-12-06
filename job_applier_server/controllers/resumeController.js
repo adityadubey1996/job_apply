@@ -7,6 +7,32 @@ const ResumeGenerator = require("../resumeGenerator");
 const cloudBucketService = require("../services/bucketService");
 const { readYAML } = require("../services/readYaml");
 
+const generateYaml = async (resumeData, profileId) => {
+  // Convert the object into YAML format
+  const yamlContent = yaml.dump(resumeData);
+
+  // Define the directory and temporary file name for the YAML file
+  const tempDir = path.join(__dirname, "../temp_yamls");
+  const timestamp = new Date().toISOString().replace(/[-:.]/g, "_");
+  const fileName = `resume_${timestamp}.yaml`;
+  const tempFilePath = path.join(tempDir, fileName);
+
+  // Ensure the temporary directory exists
+  if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir, { recursive: true });
+  }
+
+  // Write the YAML content to the temporary file
+  fs.writeFileSync(tempFilePath, yamlContent, "utf8");
+
+  // Upload the file to Google Cloud Storage
+  return await cloudBucketService.createYamlFileForProfile(
+    profileId,
+    { path: tempFilePath, mimetype: "text/yaml", originalname: fileName },
+    "yamlPath"
+  );
+};
+
 const generateYamlFile = async (req, res) => {
   try {
     const { resumeData } = req.body;
@@ -37,32 +63,8 @@ const generateYamlFile = async (req, res) => {
     console.log("profile", profile);
     console.log("profileId", profileId);
 
-    // Convert the object into YAML format
-    const yamlContent = yaml.dump(resumeData);
-
-    // Define the directory and temporary file name for the YAML file
-    const tempDir = path.join(__dirname, "../temp_yamls");
-    const timestamp = new Date().toISOString().replace(/[-:.]/g, "_");
-    const fileName = `resume_${timestamp}.yaml`;
-    const tempFilePath = path.join(tempDir, fileName);
-
-    // Ensure the temporary directory exists
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    // Write the YAML content to the temporary file
-    fs.writeFileSync(tempFilePath, yamlContent, "utf8");
-
-    // Upload the file to Google Cloud Storage
-    const yamlPath = await cloudBucketService.createYamlFileForProfile(
-      profileId,
-      { path: tempFilePath, mimetype: "text/yaml", originalname: fileName },
-      "yamlPath"
-    );
-
     // Update the Profile model with the YAML path and resume data
-    profile.yamlPath = yamlPath;
+    profile.yamlPath = await generateYaml(resumeData, profileId);
     profile.resumeData = JSON.stringify(resumeData); // Store the resumeData as stringified JSON
 
     // Save or update the profile
@@ -89,9 +91,21 @@ const generateOptimizedResume = async (req, res) => {
   try {
     // Fetch Profile
     const profile = await Profile.findOne({ userId });
-    if (!profile || !profile.yamlPath) {
-      return res.status(404).json({ error: "Profile or YAML not found." });
+
+    if (!profile) {
+      return res.status(404).json({ error: "Profile  not found." });
     }
+    if (!profile.resumeData) {
+      return res.status(404).json({
+        error:
+          "Profile resume Date not found. Navigate to profile and create resume data",
+      });
+    }
+    if (!profile.yamlPath) {
+      const { _id: profileId } = profile;
+      profile.yamlPath = await generateYaml(profile.resumeData, profileId);
+    }
+    console.log("profile", profile);
     const { _id: profileId } = profile;
     // Create Resume entry in DB
     const newResume = new Resume({

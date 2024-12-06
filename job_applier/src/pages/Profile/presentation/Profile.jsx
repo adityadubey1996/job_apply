@@ -34,8 +34,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import LabelWrapper from "./label";
-import MultiSelect from "./MultiSelect";
+import LabelWrapper from "../components/label";
+import MultiSelect from "../components/MultiSelect";
 import axios from "axios";
 
 import {
@@ -55,12 +55,13 @@ import {
 } from "../utils";
 import { postResumeData as postResumeApi } from "../../../api/api";
 import { useToast } from "@/hooks/use-toast";
+import { ArrowLeft, Upload } from "lucide-react";
 
-export default function ResumeForm({ profileData }) {
+export default function ResumeForm({ profileData, onGoToOptions }) {
   const { toast } = useToast();
   const { register, control, getValues, setValue } = useForm({});
   const [isLoading, setLoading] = useState(false);
-
+  console.log("profileData", profileData);
   const [formValues, setFormValues] = profileData
     ? useState(transformToCamelCase(profileData))
     : useState(initialFormValue);
@@ -80,7 +81,8 @@ export default function ResumeForm({ profileData }) {
   const postResumeData = async (resumeData) => {
     try {
       setLoading(true);
-      const result = await postResumeApi(resumeData);
+      console.log("resumeData", resumeData);
+      // const result = await postResumeApi(resumeData);
       console.log("resule", result);
 
       if (result) {
@@ -969,6 +971,16 @@ export default function ResumeForm({ profileData }) {
 
   return (
     <div className="flex flex-col justify-evenly w-full h-full max-w-screen-md max-h-screen-md h-full rounded-md overflow-auto p-8">
+      <div className="flex items-center mb-4">
+        <Button
+          variant="ghost"
+          onClick={() => onGoToOptions(false)}
+          className="mr-2"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back
+        </Button>
+      </div>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="personal-info">
           <AccordionTrigger>Personal Information</AccordionTrigger>

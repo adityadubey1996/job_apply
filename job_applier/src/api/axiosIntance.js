@@ -1,6 +1,7 @@
 import axios from "axios";
 // import { useToast } from "@/hooks/use-toast";
 import { navigateToLogin as navigationWrapper } from "../services/navigationService";
+import { getServerUrl } from "./config";
 // const { toast } = useToast();
 
 const navigateToLogin = () => {
@@ -10,7 +11,7 @@ const navigateToLogin = () => {
 console.log("process.env", import.meta.env);
 // Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080", // Replace with your API's base URL
+  baseURL: getServerUrl(), // Replace with your API's base URL
   timeout: 10000, // Optional timeout
 });
 

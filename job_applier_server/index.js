@@ -9,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const connectDB = require("./config/dataBaseConnection");
 const cloudBucketService = require("./services/bucketService");
+const { setupWebSocket } = require("./services/websocketService");
 connectDB();
 // Configure allowed origins and headers
 const allowedOrigins = [
@@ -60,25 +61,28 @@ app.use("/api/profile", profileRoutes);
 // Create HTTP server and wrap Express app
 const server = http.createServer(app);
 
-// WebSocket setup
-const wss = new WebSocket.Server({ server });
+// Set up WebSocket with authentication
+setupWebSocket(server);
 
-wss.on("connection", (ws) => {
-  console.log("WebSocket connection established");
+// // WebSocket setup
+// const wss = new WebSocket.Server({ server });
 
-  // Message event
-  ws.on("message", (message) => {
-    console.log("Received message:", message);
+// wss.on("connection", (ws) => {
+//   console.log("WebSocket connection established");
 
-    // Echo the received message back to the client
-    ws.send(`Server received: ${message}`);
-  });
+//   // Message event
+//   ws.on("message", (message) => {
+//     console.log("Received message:", message);
 
-  // Close event
-  ws.on("close", () => {
-    console.log("WebSocket connection closed");
-  });
-});
+//     // Echo the received message back to the client
+//     ws.send(`Server received: ${message}`);
+//   });
+
+//   // Close event
+//   ws.on("close", () => {
+//     console.log("WebSocket connection closed");
+//   });
+// });
 
 // Start server
 const PORT = process.env.PORT || 8080;

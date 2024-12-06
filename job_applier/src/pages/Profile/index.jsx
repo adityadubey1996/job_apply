@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { CustomLoader } from "../components/loader";
 import { getProfileDetails } from "../../api/api";
-import ResumeForm from "./components/Profile";
+import ResumeForm from "./presentation/Profile";
+import { ResumeOptions } from "./presentation/CreateProfile";
 
 const Profile = () => {
   const [loading, setLoading] = useState(true);
-  const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState(null); // Persist profile data
+  const [showForm, setShowForm] = useState(false); // Toggle between Form and Options
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const response = await getProfileDetails();
-        console.log("Profile Data:", response.data); // Log the data to the console
+        console.log("Profile Data:", response.data); // Log data to console
         setProfileData(response.data);
+        // Automatically navigate to form if profile data exists
+        if (response.data?.resumeData) {
+          setShowForm(true);
+        }
       } catch (error) {
         console.error("Error fetching profile details:", error);
       } finally {
@@ -29,10 +35,29 @@ const Profile = () => {
 
   return (
     <div className="flex-1 flex justify-center items-center pt-6 pr-6 pb-6">
-      {profileData && profileData.resumeData ? (
-        <ResumeForm profileData={JSON.parse(profileData.resumeData)} />
+      {showForm ? (
+        <ResumeForm
+          profileData={
+            profileData && profileData.resumeData
+              ? JSON.parse(profileData?.resumeData)
+              : undefined
+          }
+          onGoToOptions={() => setShowForm(false)} // Navigate to ResumeOptions
+        />
       ) : (
-        <p>No profile data available.</p>
+        <ResumeOptions
+          onFillForm={() => {
+            // use state to make the ResumeForm component visible
+            setShowForm(true);
+          }}
+          onProcessSuccess={(updatedProfileData) => {
+            // Update profileData if changes are made in ResumeOptions
+            if (updatedProfileData && updatedProfileData.resumeData) {
+              setProfileData(updatedProfileData._doc);
+            }
+            setShowForm(true);
+          }}
+        />
       )}
     </div>
   );

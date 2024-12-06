@@ -16,7 +16,7 @@ function Calendar({
   return (
     <DayPicker
       captionLayout="dropdown"
-      fromYear={2015}
+      fromYear={1901}
       toYear={2025}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}

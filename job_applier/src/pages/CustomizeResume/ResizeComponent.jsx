@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GripHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils"; // Assuming a utility for conditional classes
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
-const ResizableSplitPane = ({ leftComponent, rightComponent }) => {
+const ResizableSplitPane = ({ leftComponent, rightComponent, isDisabled }) => {
+  const navigate = useNavigate();
+
   const [dividerPosition, setDividerPosition] = useState(50); // 50-50 default split
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -46,6 +50,19 @@ const ResizableSplitPane = ({ leftComponent, rightComponent }) => {
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   };
+  if (isDisabled) {
+    return (
+      <div>
+        <Button
+          onClick={() => {
+            navigate("/profile");
+          }}
+        >
+          Navigate To Profile
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className=" flex h-screen w-full">

@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { login } from "../../api/api";
-
+import PasswordField from "../components/passwordFields";
 const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
@@ -85,20 +85,19 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Enter your password"
-                      {...field}
-                      className="bg-gray-800 text-white border border-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </FormControl>
+                  <PasswordField
+                    id="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                    {...field} // Pass value, onChange, and onBlur
+                  />
                   <FormMessage />
                 </FormItem>
               )}
