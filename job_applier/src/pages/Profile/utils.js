@@ -70,7 +70,7 @@ export const initialFormValue = {
 export const transformToCamelCase = (input) => {
   const transformFullName = (name, surname) =>
     `${name || ""} ${surname || ""}`.trim();
-  console.log("input from transformToCamelCase", input);
+
   return {
     personalInfo: {
       fullName: transformFullName(

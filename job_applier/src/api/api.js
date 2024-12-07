@@ -60,3 +60,15 @@ export const downloadResume = async (filePath) => {
 
   return response.data;
 };
+
+export const postGetStartedData = async () => {
+  const response = await axiosInstance.post(`/api/get-started`, {});
+
+  return response.data;
+};
+
+export const postSuggestions = async (text) => {
+  const response = await axiosInstance.post(`/api/suggestions`, { text });
+
+  return response.data;
+};

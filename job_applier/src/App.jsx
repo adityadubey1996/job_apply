@@ -18,6 +18,7 @@ import { setNavigate } from "./services/navigationService";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import LandingPage from "./pages/landingPage";
+import LinkedInEasyApplyDashboard from "./pages/AutoApplier";
 // Wrapper to conditionally include sidebar
 const AppWrapper = () => {
   const navigate = useNavigate();
@@ -49,6 +50,10 @@ const AppWrapper = () => {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/customize-resume" element={<CustomizeResume />} />
+          <Route
+            path="/linkedin-easy-apply"
+            element={<LinkedInEasyApplyDashboard />}
+          />
           <Route path="/history" element={<History />} />
           <Route path="/ai-setup" element={<AISetup />} />
           <Route path="*" element={<Navigate to="/login" replace />} />

@@ -82,7 +82,7 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
     try {
       setLoading(true);
       console.log("resumeData", resumeData);
-      // const result = await postResumeApi(resumeData);
+      const result = await postResumeApi(resumeData);
       console.log("resule", result);
 
       if (result) {

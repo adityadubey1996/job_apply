@@ -47,11 +47,9 @@ const Profile = () => {
       ) : (
         <ResumeOptions
           onFillForm={() => {
-            // use state to make the ResumeForm component visible
             setShowForm(true);
           }}
           onProcessSuccess={(updatedProfileData) => {
-            // Update profileData if changes are made in ResumeOptions
             if (updatedProfileData && updatedProfileData.resumeData) {
               setProfileData(updatedProfileData._doc);
             }

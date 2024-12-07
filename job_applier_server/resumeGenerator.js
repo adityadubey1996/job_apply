@@ -30,144 +30,31 @@ class ResumeGenerator {
     };
   }
 
-  // async createLaTeXContent(aiGeneratedYamlFilePath) {
-  //   try {
-  //     console.log(
-  //       `Reading AI-Generated YAML file from path: ${aiGeneratedYamlFilePath}`
-  //     );
-  //     const fileContent = await fs.readFile(aiGeneratedYamlFilePath, "utf8");
-  //     const data = yaml.parse(fileContent);
+  formatDate = (dateString, format = "MM-YYYY") => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
 
-  //     console.log("data from yaml file", data);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
 
-  //     let latexContent = `
-  // \\documentclass[11pt,a4paper,sans,colorlinks=true,linkcolor=blue,pdfpagelabels=false]{moderncv}
-  // \\moderncvstyle{banking}
-  // \\moderncvcolor{blue}
-  // \\usepackage[scale=0.8]{geometry}
-  // \\usepackage[utf8]{inputenc}
+    switch (format) {
+      case "DD-MM-YYYY":
+        return `${day}-${month}-${year}`;
+      case "MM-DD-YYYY":
+        return `${month}-${day}-${year}`;
+      case "YYYY-MM-DD":
+        return `${year}-${month}-${day}`;
+      case "MM-YYYY":
+        return `${month}-${year}`;
+      case "YYYY":
+        return `${year}`;
+      default:
+        return `${day}-${month}-${year}`; // Default to DD-MM-YYYY
+    }
+  };
 
-  // \\name{${data.personal_information?.name || ""}}{${
-  //       data.personal_information?.surname || ""
-  //     }}
-  // \\title{Experienced Professional in Software Engineering}
-  // \\address{${data.personal_information?.address || ""}}{${
-  //       data.personal_information?.city || ""
-  //     }}{${data.personal_information?.country || ""}}
-  // \\phone[mobile]{${data.personal_information?.phone_prefix || ""}${
-  //       data.personal_information?.phone || ""
-  //     }}
-  // \\email{${data.personal_information?.email || ""}}
-  // \\social[linkedin]{${data.personal_information?.linkedin || ""}}
-  // \\social[github]{${data.personal_information?.github || ""}}
-
-  // \\begin{document}
-  // \\makecvtitle
-  // `;
-
-  //     // Add Professional Summary if present
-  //     if (data.professional_summary?.summary) {
-  //       latexContent += `
-  // \\section{Professional Summary}
-  // ${data.professional_summary.summary}
-  // `;
-  //     }
-
-  //     // Add Skills if present
-  //     if (data.skills?.length > 0) {
-  //       latexContent += `
-  // \\section{Skills}
-  // \\cvitem{}{\\begin{itemize}`;
-  //       data.skills.forEach((skill) => {
-  //         latexContent += `\\item ${skill}\n`;
-  //       });
-  //       latexContent += `\\end{itemize}}
-  // `;
-  //     }
-
-  //     // Add Education Details if present
-  //     if (data.education_details?.length > 0) {
-  //       latexContent += `\\section{Education}`;
-  //       data.education_details.forEach((edu) => {
-  //         latexContent += `\\cventry{${edu.graduation_year || ""}}{${
-  //           edu.degree || ""
-  //         }}{${edu.university || ""}}{${edu.field_of_study || ""}}{}{}\n`;
-  //       });
-  //     }
-
-  //     // Add Experience Details if present
-  //     if (data.experience_details?.length > 0) {
-  //       latexContent += `\\section{Experience}`;
-  //       data.experience_details.forEach((job) => {
-  //         latexContent += `\\cventry{${job.startDate || ""}--${
-  //           job.endDate || ""
-  //         }}{${job.position || ""}}{${job.company || ""}}{${
-  //           job.location || ""
-  //         }}{}{\n\\begin{itemize}`;
-  //         job.key_responsibilities?.forEach((resp) => {
-  //           latexContent += `\\item ${resp}\n`;
-  //         });
-  //         latexContent += `\\end{itemize}}\n`;
-  //       });
-  //     }
-
-  //     // Add Projects (at least one required)
-  //     if (data.projects?.length > 0) {
-  //       latexContent += `\\section{Projects}`;
-  //       data.projects.forEach((project) => {
-  //         latexContent += `\\cvitem{${project.name || ""}}{${
-  //           project.description || ""
-  //         }}`;
-  //         if (project.link) {
-  //           latexContent += ` \\href{${project.link}}{[Link]}`;
-  //         }
-  //         latexContent += `\n`;
-  //       });
-  //     }
-
-  //     // Add Certifications if present
-  //     if (data.certifications?.length > 0) {
-  //       latexContent += `\\section{Certifications}`;
-  //       data.certifications.forEach((cert) => {
-  //         latexContent += `\\cvitem{}{${cert.name || ""} (${
-  //           cert.organization || ""
-  //         }, ${cert.year || "Year not available"})}\n`;
-  //       });
-  //     }
-
-  //     // Add Achievements if present
-  //     if (data.achievements?.length > 0) {
-  //       latexContent += `\\section{Achievements}`;
-  //       data.achievements.forEach((achieve) => {
-  //         latexContent += `\\cvitem{${achieve.name || ""}}{${
-  //           achieve.description || ""
-  //         }}\n`;
-  //       });
-  //     }
-
-  //     // Add Languages if present
-  //     if (data.languages?.length > 0) {
-  //       latexContent += `\\section{Languages}
-  // \\cvitem{}{\\begin{itemize}`;
-  //       data.languages.forEach((lang) => {
-  //         latexContent += `\\item ${lang.language || ""}: ${
-  //           lang.proficiency || ""
-  //         }\n`;
-  //       });
-  //       latexContent += `\\end{itemize}}
-  // `;
-  //     }
-
-  //     latexContent += `\\end{document}`;
-
-  //     return latexContent;
-  //   } catch (error) {
-  //     console.error("Error creating LaTeX content:", error);
-  //     throw new Error("Failed to create LaTeX content.");
-  //   }
-  // }
-
-  async createLaTeXContent(aiGeneratedYamlFilePath) {
+  async createLaTeXContent(aiGeneratedYamlFilePath, dateFormat = "MM-YYYY") {
     try {
       console.log(
         `Reading AI-Generated YAML file from path: ${aiGeneratedYamlFilePath}`
@@ -227,9 +114,12 @@ class ResumeGenerator {
   \\section{Education}
   `;
         data.education_details.forEach((edu) => {
-          latexContent += `\\cventry{${edu.graduation_year || ""}}{${
-            edu.degree || ""
-          }}{${edu.university || ""}}{${edu.field_of_study || ""}}{}{}\n`;
+          latexContent += `\\cventry{${this.formatDate(
+            edu.graduation_year,
+            "YYYY"
+          )}}{${edu.degree || ""}}{${edu.university || ""}}{${
+            edu.field_of_study || ""
+          }}{}{}\n`;
         });
       }
 
@@ -239,7 +129,12 @@ class ResumeGenerator {
   \\section{Experience}
   `;
         data.experience_details.forEach((job) => {
-          latexContent += `\\cventry{${job.employment_period || ""}}{${
+          const [startDate, endDate] =
+            job.employment_period?.split(" - ") || [];
+          latexContent += `\\cventry{${this.formatDate(
+            startDate,
+            dateFormat
+          )} -- ${this.formatDate(endDate, dateFormat)}}{${
             job.position || ""
           }}{${job.company || ""}}{${job.location || ""}}{}{\n\\begin{itemize}
   `;
@@ -313,106 +208,6 @@ class ResumeGenerator {
       throw new Error("Failed to create LaTeX content.");
     }
   }
-
-  //   async createLaTeXContent(aiGeneratedYamlFilePath) {
-  //     try {
-  //       console.log(
-  //         `Reading AI-Generated YAML file from path: ${aiGeneratedYamlFilePath}`
-  //       );
-  //       const fileContent = await fs.readFile(aiGeneratedYamlFilePath, "utf8");
-  //       console.log(
-  //         "yaml.parse(fileContent) of aiGeneratedYamlFilePath",
-  //         yaml.parse(fileContent)
-  //       );
-  //       const data = yaml.parse(fileContent);
-  //       let latexContent = `
-  // \\documentclass[11pt,a4paper,sans,colorlinks=true,linkcolor=blue,pdfpagelabels=false]{moderncv}
-  // \\moderncvstyle{banking}
-  // \\moderncvcolor{blue}
-  // \\usepackage[scale=0.8]{geometry}
-  // \\usepackage[utf8]{inputenc}
-
-  // \\name{${data.personal_information.name || ""}}{${
-  //         data.personal_information.surname || ""
-  //       }}
-  // \\title{Experienced Professional in Software Engineering}
-  // \\address{${data.personal_information.address || ""}}{${
-  //         data.personal_information.city || ""
-  //       }}{${data.personal_information.country || ""}}
-  // \\phone[mobile]{${data.personal_information.phone_prefix || ""}${
-  //         data.personal_information.phone || ""
-  //       }}
-  // \\email{${data.personal_information.email || ""}}
-  // \\social[linkedin]{${data.personal_information.linkedin || ""}}
-  // \\social[github]{${data.personal_information.github || ""}}
-
-  // \\begin{document}
-  // \\makecvtitle
-
-  // \\section{Professional Summary}
-  // ${data.professional_summary?.summary || "Summary not provided."}
-
-  // \\section{Skills}
-  // \\cvitem{}{\\begin{itemize}`;
-  //       data.skills.forEach((skill) => {
-  //         latexContent += `\\item ${skill}\n`;
-  //       });
-  //       latexContent += `\\end{itemize}}
-
-  // \\section{Education}`;
-  //       data.education_details.forEach((edu) => {
-  //         latexContent += `\\cventry{${edu.graduation_year || ""}}{${
-  //           edu.degree || ""
-  //         }}{${edu.university || ""}}{${edu.field_of_study || ""}}{}{}\n`;
-  //       });
-
-  //       latexContent += `\\section{Experience}`;
-  //       data.experience_details.forEach((job) => {
-  //         latexContent += `\\cventry{${job.employment_period || ""}}{${
-  //           job.position || ""
-  //         }}{${job.company || ""}}{${job.location || ""}}{}{\n\\begin{itemize}`;
-  //         job.key_responsibilities.forEach((resp) => {
-  //           latexContent += `\\item ${resp}\n`;
-  //         });
-  //         latexContent += `\\end{itemize}}\n`;
-  //       });
-
-  //       latexContent += `\\section{Projects}`;
-  //       data.projects.forEach((project) => {
-  //         latexContent += `\\cvitem{${project.name || ""}}{\\href{${
-  //           project.link || ""
-  //         }}{${project.description || ""}}}\n`;
-  //       });
-
-  //       latexContent += `\\section{Certifications}`;
-  //       data.certifications.forEach((cert) => {
-  //         latexContent += `\\cvitem{}{${cert}}\n`;
-  //       });
-
-  //       latexContent += `\\section{Achievements}`;
-  //       data.achievements.forEach((achieve) => {
-  //         latexContent += `\\cvitem{${achieve.name || ""}}{${
-  //           achieve.description || ""
-  //         }}\n`;
-  //       });
-
-  //       latexContent += `\\section{Languages}
-  // \\cvitem{}{\\begin{itemize}`;
-  //       data.languages.forEach((lang) => {
-  //         latexContent += `\\item ${lang.language || ""}: ${
-  //           lang.proficiency || ""
-  //         }\n`;
-  //       });
-  //       latexContent += `\\end{itemize}}
-
-  // \\end{document}
-  //     `;
-  //       return latexContent;
-  //     } catch (error) {
-  //       console.error("Error creating LaTeX content:", error);
-  //       throw new Error("Failed to create LaTeX content.");
-  //     }
-  //   }
 
   async generatePDF(aiGeneratedYamlFilePath) {
     try {
@@ -613,7 +408,7 @@ class ResumeGenerator {
       if (responseContent) {
         const formattedData = this.extractContent(responseContent);
         if (formattedData) {
-          console.log("Saving optimized YAML...", formattedData);
+          console.log("Saving optimized YAML...");
           return await this.saveToYAML(formattedData);
         } else {
           throw new Error("Failed to extract content from GROQ response.");

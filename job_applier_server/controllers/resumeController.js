@@ -7,15 +7,21 @@ const ResumeGenerator = require("../resumeGenerator");
 const cloudBucketService = require("../services/bucketService");
 const { readYAML } = require("../services/readYaml");
 
-const generateYaml = async (resumeData, profileId) => {
-  // Convert the object into YAML format
-  const yamlContent = yaml.dump(resumeData);
-
-  // Define the directory and temporary file name for the YAML file
+const getTempYamlPath = () => {
   const tempDir = path.join(__dirname, "../temp_yamls");
   const timestamp = new Date().toISOString().replace(/[-:.]/g, "_");
   const fileName = `resume_${timestamp}.yaml`;
   const tempFilePath = path.join(tempDir, fileName);
+  return { tempFilePath, tempDir, fileName };
+};
+
+const generateYaml = async (
+  resumeData,
+  profileId,
+  { tempFilePath, tempDir, fileName }
+) => {
+  // Convert the object into YAML format
+  const yamlContent = yaml.dump(resumeData);
 
   // Ensure the temporary directory exists
   if (!fs.existsSync(tempDir)) {
@@ -62,9 +68,16 @@ const generateYamlFile = async (req, res) => {
     const { _id: profileId } = profile;
     console.log("profile", profile);
     console.log("profileId", profileId);
+    // Define the directory and temporary file name for the YAML file
+    const { tempFilePath, tempDir, fileName } = getTempYamlPath();
 
+    const yamlPath = await generateYaml(resumeData, profileId, {
+      tempFilePath,
+      tempDir,
+      fileName,
+    });
     // Update the Profile model with the YAML path and resume data
-    profile.yamlPath = await generateYaml(resumeData, profileId);
+    profile.yamlPath = yamlPath;
     profile.resumeData = JSON.stringify(resumeData); // Store the resumeData as stringified JSON
 
     // Save or update the profile
@@ -103,7 +116,11 @@ const generateOptimizedResume = async (req, res) => {
     }
     if (!profile.yamlPath) {
       const { _id: profileId } = profile;
-      profile.yamlPath = await generateYaml(profile.resumeData, profileId);
+      profile.yamlPath = await generateYaml(
+        profile.resumeData,
+        profileId,
+        getTempYamlPath()
+      );
     }
     console.log("profile", profile);
     const { _id: profileId } = profile;

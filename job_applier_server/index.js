@@ -7,6 +7,9 @@ const cors = require("cors");
 const resumeRoutes = require("./routes/resumeRoutes");
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
+const getStartedData = require("./routes/getStarterRoutes");
+const suggestionRoutes = require("./routes/suggestionRoutes");
+
 const connectDB = require("./config/dataBaseConnection");
 const cloudBucketService = require("./services/bucketService");
 const { setupWebSocket } = require("./services/websocketService");
@@ -57,32 +60,14 @@ app.get("/", (req, res) => {
 app.use("/api/resume", resumeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api", getStartedData);
+app.use("/api", suggestionRoutes);
 
 // Create HTTP server and wrap Express app
 const server = http.createServer(app);
 
 // Set up WebSocket with authentication
 setupWebSocket(server);
-
-// // WebSocket setup
-// const wss = new WebSocket.Server({ server });
-
-// wss.on("connection", (ws) => {
-//   console.log("WebSocket connection established");
-
-//   // Message event
-//   ws.on("message", (message) => {
-//     console.log("Received message:", message);
-
-//     // Echo the received message back to the client
-//     ws.send(`Server received: ${message}`);
-//   });
-
-//   // Close event
-//   ws.on("close", () => {
-//     console.log("WebSocket connection closed");
-//   });
-// });
 
 // Start server
 const PORT = process.env.PORT || 8080;

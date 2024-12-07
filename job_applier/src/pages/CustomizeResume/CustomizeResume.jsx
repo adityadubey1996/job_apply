@@ -27,16 +27,6 @@ const CustomizeResume = () => {
     const fetchProfile = async () => {
       try {
         const response = await getProfileDetails();
-        console.log("Profile Data:", response.data); // Log data to console
-        // Automatically navigate to form if profile data exists
-        console.log(
-          "if (!response.data?.resumeData) {",
-          !response.data?.resumeData
-        );
-        console.log(
-          "if (!response.data?.resumeData) {",
-          response.data?.resumeData
-        );
 
         if (!response.data?.resumeData) {
           setIsProfileDataAvailable(false);
