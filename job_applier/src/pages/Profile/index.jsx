@@ -13,11 +13,10 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const response = await getProfileDetails();
-        console.log("Profile Data:", response.data); // Log data to console
         setProfileData(response.data);
         // Automatically navigate to form if profile data exists
         if (response.data?.resumeData) {
-          setShowForm(true);
+          // setShowForm(true);
         }
       } catch (error) {
         console.error("Error fetching profile details:", error);
@@ -28,6 +27,12 @@ const Profile = () => {
 
     fetchProfile();
   }, []);
+
+  useEffect(() => {
+    if (profileData) {
+      setShowForm(true);
+    }
+  }, [profileData]);
 
   if (loading) {
     return <CustomLoader />;
@@ -51,9 +56,8 @@ const Profile = () => {
           }}
           onProcessSuccess={(updatedProfileData) => {
             if (updatedProfileData && updatedProfileData.resumeData) {
-              setProfileData(updatedProfileData._doc);
+              setProfileData(updatedProfileData);
             }
-            setShowForm(true);
           }}
         />
       )}

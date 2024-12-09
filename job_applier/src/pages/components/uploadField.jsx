@@ -56,14 +56,12 @@ export const UploadComponent = ({ onProcessSuccess }) => {
   };
 
   const onFileProcessed = (value, data) => {
-    console.log("File processed:", value);
+    console.log("File processed:", value, data);
     if (value) {
-      setTimeout(() => {
-        setLoaderMessage("File processed successfully! Navigating...");
-        resetTimeout(); // Reset timeout as processing is complete
-        onProcessSuccess(true, data);
-        setShowLoader(false);
-      }, 3000);
+      setLoaderMessage("File processed successfully! Navigating...");
+      resetTimeout(); // Reset timeout as processing is complete
+      onProcessSuccess(data);
+      setShowLoader(false);
     }
   };
 
