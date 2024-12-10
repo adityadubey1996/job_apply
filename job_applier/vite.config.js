@@ -11,6 +11,10 @@ export default defineConfig({
   },
   server: {
     host: "0.0.0.0", // Allow external access
-    port: 5173,      // Ensure it uses the same port
+    port: 5173, // Ensure it uses the same port
+  },
+  preview: {
+    host: "0.0.0.0", // Allow external access for preview
+    port: 5173, // Port for preview server
   },
 });
