@@ -207,7 +207,7 @@ function SidebarComponent() {
 
 export default function AppSideBar() {
   return (
-    <div className="w-fit max-w-xs">
+    <div className="w-fit max-w-xs" style={{ position: "absolute" }}>
       <SidebarProvider>
         {/* Sidebar Trigger for Mobile */}
         <SidebarTrigger onClick={() => console.log("Trigger clicked!")}>

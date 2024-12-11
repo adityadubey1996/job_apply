@@ -6,9 +6,10 @@ const LeftComponent = ({
   setJobDescription,
   companyInfo,
   setCompanyInfo,
+  children,
 }) => {
   return (
-    <div className="flex flex-col justify-evenly p-4 h-full">
+    <div className="flex flex-col justify-evenly p-4 h-full w-full">
       {/* Job Description Section */}
       <div className="flex flex-col items-center">
         <Label htmlFor="job-description" className="mb-2 text-lg font-medium">
@@ -19,6 +20,7 @@ const LeftComponent = ({
           placeholder="Enter job description with proper formatting, bullet points, and key details..."
           value={jobDescription}
           onChange={(e) => setJobDescription(e.target.value)}
+          // className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 min-h-[150px] resize-none border rounded-lg p-3 text-sm"
           className="w-full max-w-md min-h-[150px] resize-none border rounded-lg p-3 text-sm"
         />
       </div>
@@ -36,6 +38,7 @@ const LeftComponent = ({
           className="w-full max-w-md min-h-[150px] resize-none border rounded-lg p-3 text-sm"
         />
       </div>
+      <div className="flex justify-center mt-4">{children}</div>
     </div>
   );
 };

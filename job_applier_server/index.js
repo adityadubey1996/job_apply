@@ -19,6 +19,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://your-frontend-domain.com",
   "https://tailorcv.in",
+  "http://192.168.1.82:5174",
 ];
 const allowedHeaders = ["Content-Type", "Authorization"];
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Plus, Check, Info, Minus } from "lucide-react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import { format } from "date-fns";
 import { Spinner } from "@/components/ui/spinner"; // Assuming you have a spinner component
 import { cn } from "@/lib/utils";
@@ -52,12 +54,23 @@ import {
   industries,
   skills,
   transformToCamelCase,
+  hasErrors,
 } from "../utils";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { postResumeData as postResumeApi } from "../../../api/api";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Upload } from "lucide-react";
 
 export default function ResumeForm({ profileData, onGoToOptions }) {
+  const navigate = useNavigate();
+
   const { toast } = useToast();
   const { register, control, getValues, setValue } = useForm({});
   const [isLoading, setLoading] = useState(false);
@@ -69,13 +82,15 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
   const [experienceErrors, setExperienceErrors] = useState(
     initialFormValue.experienceDetails.map(() => ({})) // Initialize empty error objects for each entry
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [personalInfoErrors, setPersonalInfoErrors] = useState({});
   const [educationErrors, setEducationErrors] = useState([]);
   const [projectErrors, setProjectErrors] = useState([]);
   const [achievementErrors, setAchievementErrors] = useState([]);
   const [certificationErrors, setCertificationErrors] = useState([]);
   const [languageErrors, setLanguageErrors] = useState([]);
-  const [interestsError, setInterestsError] = useState("");
+  // const [interestsError, setInterestsError] = useState("");
   const [errors, setErrors] = useState({});
 
   const postResumeData = async (resumeData) => {
@@ -571,10 +586,10 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
       }
     });
 
-    // Validate Interests
-    if (!validateInterests(formValues.interests)) {
-      isValid = false;
-    }
+    // // Validate Interests
+    // if (!validateInterests(formValues.interests)) {
+    //   isValid = false;
+    // }
 
     return isValid;
   };
@@ -585,7 +600,6 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
   console.log("projectErrors", projectErrors);
   console.log("achievementErrors", achievementErrors);
 
-  console.log("interestsError", interestsError);
   console.log("certificationErrors", certificationErrors);
   console.log("languageErrors", languageErrors);
   const handleSubmit = async (event) => {
@@ -599,6 +613,7 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
       const obj = transformToSnakeCase(formValues);
       console.log("obj", obj);
       await postResumeData(obj);
+      setIsModalOpen(true);
     } else {
       console.log("Form has errors:", errors);
     }
@@ -931,22 +946,22 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
       return updatedErrors;
     });
   };
-  const handleInterestChange = (value) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      interests: value,
-    }));
-    validateInterests(value);
-  };
+  // const handleInterestChange = (value) => {
+  //   setFormValues((prevValues) => ({
+  //     ...prevValues,
+  //     interests: value,
+  //   }));
+  //   validateInterests(value);
+  // };
 
-  const validateInterests = (value) => {
-    if (value.length === 0) {
-      setInterestsError("At least one interest must be selected.");
-      return false;
-    }
-    setInterestsError("");
-    return true;
-  };
+  // const validateInterests = (value) => {
+  //   if (value.length === 0) {
+  //     setInterestsError("At least one interest must be selected.");
+  //     return false;
+  //   }
+  //   setInterestsError("");
+  //   return true;
+  // };
 
   const renderTooltip = (content) => (
     <TooltipProvider>
@@ -983,10 +998,16 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
       </div>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="personal-info">
-          <AccordionTrigger>Personal Information</AccordionTrigger>
+          <AccordionTrigger>
+            <span
+              className={hasErrors(personalInfoErrors) ? "text-red-500" : ""}
+            >
+              Personal Information
+            </span>
+          </AccordionTrigger>
           <AccordionContent>
             <div className="grid gap-4 mt-6">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="space-y-3">
                   <LabelWrapper
                     htmlFor={"fullName"}
@@ -1065,7 +1086,7 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
                   )}
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="space-y-3">
                   <LabelWrapper
                     htmlFor={"country"}
@@ -1253,7 +1274,11 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="education">
-          <AccordionTrigger>Education Details</AccordionTrigger>
+          <AccordionTrigger>
+            <span className={hasErrors(educationErrors) ? "text-red-500" : ""}>
+              Education Details
+            </span>
+          </AccordionTrigger>
           <AccordionContent>
             {formValues.educationDetails.map((education, index) => (
               <div key={index} className="mb-4 p-4 border rounded">
@@ -1302,7 +1327,7 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div className="space-y-3">
                       <LabelWrapper
                         htmlFor={`gpa-${index}`}
@@ -1423,7 +1448,12 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="experience">
-          <AccordionTrigger>Experience Details</AccordionTrigger>
+          <AccordionTrigger>
+            {" "}
+            <span className={hasErrors(experienceErrors) ? "text-red-500" : ""}>
+              Experience Details
+            </span>
+          </AccordionTrigger>
           <AccordionContent>
             {formValues.experienceDetails.map((experience, index) => (
               <div key={index} className="mb-4 p-4 border rounded">
@@ -1470,7 +1500,7 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
                       </p>
                     )}
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div className="space-y-3">
                       <LabelWrapper
                         htmlFor={`startDate-${index}`}
@@ -1721,7 +1751,11 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="projects">
-          <AccordionTrigger>Projects</AccordionTrigger>
+          <AccordionTrigger>
+            <span className={hasErrors(projectErrors) ? "text-red-500" : ""}>
+              Projects
+            </span>
+          </AccordionTrigger>
           <AccordionContent>
             {formValues.projects.map((project, index) => (
               <div key={index} className="mb-4 p-4 border rounded">
@@ -1808,7 +1842,13 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
         </AccordionItem>
 
         <AccordionItem value="achievements">
-          <AccordionTrigger>Achievements</AccordionTrigger>
+          <AccordionTrigger>
+            <span
+              className={hasErrors(achievementErrors) ? "text-red-500" : ""}
+            >
+              Achievements
+            </span>
+          </AccordionTrigger>
           <AccordionContent>
             {formValues.achievements.map((achievement, index) => (
               <div key={index} className="mb-4 p-4 border rounded">
@@ -1874,7 +1914,13 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
         </AccordionItem>
 
         <AccordionItem value="certifications">
-          <AccordionTrigger>Certifications</AccordionTrigger>
+          <AccordionTrigger>
+            <span
+              className={hasErrors(certificationErrors) ? "text-red-500" : ""}
+            >
+              Certifications
+            </span>
+          </AccordionTrigger>
           <AccordionContent>
             {formValues.certifications.map((certification, index) => (
               <div key={index} className="mb-4 p-4 border rounded">
@@ -1975,7 +2021,11 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
         </AccordionItem>
 
         <AccordionItem value="languages">
-          <AccordionTrigger>Languages</AccordionTrigger>
+          <AccordionTrigger>
+            <span className={hasErrors(languageErrors) ? "text-red-500" : ""}>
+              Languages
+            </span>
+          </AccordionTrigger>
           <AccordionContent>
             {formValues.languages.map((language, index) => (
               <div key={index} className="mb-4 p-4 border rounded">
@@ -2056,7 +2106,7 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
           </AccordionContent>
         </AccordionItem>
 
-        <AccordionItem value="interests">
+        {/* <AccordionItem value="interests">
           <AccordionTrigger>Interests</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-3 m-4">
@@ -2078,7 +2128,7 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
               )}
             </div>
           </AccordionContent>
-        </AccordionItem>
+        </AccordionItem> */}
 
         {/* <AccordionItem value="availability">
           <AccordionTrigger>Availability</AccordionTrigger>
@@ -2395,11 +2445,31 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
           </AccordionContent>
         </AccordionItem> */}
       </Accordion>
-      <div className="w-50 flex flex-row justify-center">
+      <div className="w-50 flex flex-row justify-center mt-10">
         <Button type="submit" onClick={(e) => handleSubmit(e)}>
-          Submit Resume
+          Submit Profile
         </Button>
       </div>
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>🎉 Profile Complete!</DialogTitle>
+            <DialogDescription>
+              "You've nailed it! Your profile is looking sharp and ready to
+              roll. Where to next?"
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex justify-end gap-4 mt-4">
+            <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
+              Back to Edit ✏️
+            </Button>
+            <Button onClick={() => navigate("/customize-resume")}>
+              Let’s Go 🚀
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -1,98 +1,81 @@
-import React, { useState, useEffect } from "react";
-import ResizableSplitPane from "./ResizeComponent";
+import React, { useState } from "react";
 import LeftComponent from "./LeftComponent";
+import { Spinner } from "@/components/ui/spinner"; // Assuming you have a spinner component
 import RightComponent from "./RightComponent";
-import { useNavigate } from "react-router-dom";
 import { CustomLoader } from "../components/loader";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { getProfileDetails } from "../../api/api";
+import { useToast } from "@/hooks/use-toast";
+import { createResume as createResumeApi } from "../../api/api";
 
 const CustomizeResume = () => {
-  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [currentView, setCurrentView] = useState("input"); // input | loading | result
   const [jobDescription, setJobDescription] = useState("");
   const [companyInfo, setCompanyInfo] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [isProfileDataAvailable, setIsProfileDataAvailable] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Open initially for testing
+  const [pdfFile, setPdfFile] = useState(null); // Store the generated PDF file
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await getProfileDetails();
+  const handleGenerateResume = async () => {
+    if (!jobDescription.trim() || !companyInfo.trim()) {
+      alert("Please fill in both fields before generating the resume.");
+      return;
+    }
 
-        if (!response.data?.resumeData) {
-          setIsProfileDataAvailable(false);
-          setIsModalOpen(true);
-        }
-      } catch (error) {
-        console.error("Error fetching profile details:", error);
-        setIsProfileDataAvailable(false);
-        setIsModalOpen(true);
-      } finally {
-        setLoading(false);
-      }
-    };
+    setCurrentView("loading"); // Show loading state
+    try {
+      // Call API to create the resume
+      const response = await createResumeApi({
+        jobDescription,
+        aboutCompany: companyInfo,
+      });
 
-    fetchProfile();
-  }, []);
+      setPdfFile(response.data.pdfPath); // Assume the API returns a PDF path
+      setCurrentView("result"); // Show result state
+      toast({
+        title: "Success",
+        description: `${response.data.message}`,
+        variant: "success",
+      });
+    } catch (error) {
+      console.error("Error generating resume:", error);
+      setCurrentView("input");
+      toast({
+        title: "Error",
+        description: `${error.response?.data.error || "Something Went Wrong"}`,
+        variant: "destructive",
+      });
+    }
+  };
 
-  if (loading) {
-    return <CustomLoader />;
-  }
+  const handleBackToEdit = () => {
+    setCurrentView("input");
+  };
 
   return (
-    <>
-      <ResizableSplitPane
-        leftComponent={
-          <LeftComponent
-            jobDescription={jobDescription}
-            setJobDescription={setJobDescription}
-            companyInfo={companyInfo}
-            setCompanyInfo={setCompanyInfo}
-          />
-        }
-        rightComponent={
-          <RightComponent
-            jobDescription={jobDescription}
-            companyInfo={companyInfo}
-          />
-        }
-        isDisabled={!isProfileDataAvailable}
-      />
+    <div className="h-screen w-full flex flex-col items-center justify-center p-4 max-w-4xl">
+      {currentView === "input" && (
+        <LeftComponent
+          jobDescription={jobDescription}
+          setJobDescription={setJobDescription}
+          companyInfo={companyInfo}
+          setCompanyInfo={setCompanyInfo}
+        >
+          <Button onClick={handleGenerateResume} className="mt-4">
+            Generate Resume
+          </Button>
+        </LeftComponent>
+      )}
 
-      {/* ShadCN Dialog */}
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Oops! No Profile Found</DialogTitle>
-            <DialogDescription>
-              Looks like the AI isn’t omniscient (yet). Help it out by creating
-              and saving your profile first. Click below to get started!
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-end gap-4">
-            <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
-              Nah, Later
-            </Button>
-            <Button
-              onClick={() => {
-                navigate("/profile");
-              }}
-            >
-              Fine, Take Me There
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+      {currentView === "loading" && (
+        <div className="flex flex-col items-center">
+          <Spinner className="w-8 h-8 mb-2" />
+          <p>Processing...</p>
+        </div>
+      )}
+
+      {currentView === "result" && (
+        <RightComponent pdfFile={pdfFile} onBack={handleBackToEdit} />
+      )}
+    </div>
   );
 };
 

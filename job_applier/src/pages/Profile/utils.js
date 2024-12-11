@@ -234,13 +234,272 @@ export const transformToSnakeCase = (input) => {
   };
 };
 
-export const countries = ["India", "USA", "UK", "Canada", "Australia"];
-export const phonePrefixes = ["+1", "+91", "+44", "+61"];
+export const hasErrors = (errors) => {
+  // Base case: if the input is null, undefined, or an empty object/array
+  if (
+    !errors ||
+    (Array.isArray(errors) && errors.length === 0) ||
+    (typeof errors === "object" && Object.keys(errors).length === 0)
+  ) {
+    return false;
+  }
+
+  // If the input is an array, recursively check each element
+  if (Array.isArray(errors)) {
+    return errors.some((item) => hasErrors(item));
+  }
+
+  // If the input is an object, check if any key has a non-empty value
+  if (typeof errors === "object") {
+    return Object.values(errors).some((value) => {
+      // Recursively check nested objects or arrays
+      if (typeof value === "object") {
+        return hasErrors(value);
+      }
+      // Check for non-empty strings or valid data
+      return value !== null && value !== undefined && value !== "";
+    });
+  }
+
+  // If none of the above, return false (handles unexpected types)
+  return false;
+};
+
+export const countries = [
+  "India",
+  "USA",
+  "UK",
+  "Canada",
+  "Australia",
+  // European Countries
+  "Germany",
+  "France",
+  "Italy",
+  "Spain",
+  "Netherlands",
+  "Sweden",
+  "Switzerland",
+  "Norway",
+  "Denmark",
+  "Poland",
+  "Austria",
+  "Belgium",
+  "Finland",
+  "Portugal",
+  "Ireland",
+  "Czech Republic",
+  "Hungary",
+  "Greece",
+  "Slovakia",
+  "Romania",
+  "Bulgaria",
+  "Croatia",
+  "Estonia",
+  "Lithuania",
+  "Latvia",
+  // Asian Countries
+  "Japan",
+  "South Korea",
+  "Vietnam",
+  "Thailand",
+  "Malaysia",
+  "Singapore",
+  "Indonesia",
+  "Philippines",
+  "Bangladesh",
+  "Pakistan",
+  "Sri Lanka",
+  "Nepal",
+  "Myanmar",
+  // Middle Eastern Countries
+  "United Arab Emirates",
+  "Saudi Arabia",
+  "Qatar",
+  "Kuwait",
+  "Oman",
+  "Turkey",
+  "Israel",
+  // Other Notable Countries
+  "Mexico",
+  "Brazil",
+  "Argentina",
+  "South Africa",
+  "New Zealand",
+];
+
+export const phonePrefixes = [
+  "+1", // USA, Canada
+  "+91", // India
+  "+44", // UK
+  "+61", // Australia
+  "+49", // Germany
+  "+33", // France
+  "+39", // Italy
+  "+34", // Spain
+  "+31", // Netherlands
+  "+46", // Sweden
+  "+41", // Switzerland
+  "+47", // Norway
+  "+45", // Denmark
+  "+48", // Poland
+  "+43", // Austria
+  "+32", // Belgium
+  "+358", // Finland
+  "+351", // Portugal
+  "+353", // Ireland
+  "+420", // Czech Republic
+  "+36", // Hungary
+  "+30", // Greece
+  "+421", // Slovakia
+  "+40", // Romania
+  "+359", // Bulgaria
+  "+385", // Croatia
+  "+372", // Estonia
+  "+370", // Lithuania
+  "+371", // Latvia
+  "+81", // Japan
+  "+82", // South Korea
+  "+84", // Vietnam
+  "+66", // Thailand
+  "+60", // Malaysia
+  "+65", // Singapore
+  "+62", // Indonesia
+  "+63", // Philippines
+  "+880", // Bangladesh
+  "+92", // Pakistan
+  "+94", // Sri Lanka
+  "+977", // Nepal
+  "+95", // Myanmar
+  "+971", // United Arab Emirates
+  "+966", // Saudi Arabia
+  "+974", // Qatar
+  "+965", // Kuwait
+  "+968", // Oman
+  "+90", // Turkey
+  "+972", // Israel
+  "+52", // Mexico
+  "+55", // Brazil
+  "+54", // Argentina
+  "+27", // South Africa
+  "+64", // New Zealand
+];
 export const industries = [
+  // Technology
   "Technology",
+  "Information Technology and Services",
+  "Software Development",
+  "Cybersecurity",
+  "Artificial Intelligence",
+  "Cloud Computing",
+  "Telecommunications",
+  "E-commerce",
+  "Hardware and Networking",
+
+  // Finance
   "Finance",
+  "Banking",
+  "Investment Banking",
+  "Insurance",
+  "Accounting",
+  "Wealth Management",
+  "Venture Capital and Private Equity",
+  "Fintech",
+
+  // Healthcare
   "Healthcare",
+  "Pharmaceuticals",
+  "Medical Devices",
+  "Biotechnology",
+  "Hospitals and Health Care",
+  "Telehealth",
+  "Health and Wellness",
+  "Public Health",
+
+  // Education
   "Education",
+  "Higher Education",
+  "E-learning",
+  "K-12 Education",
+  "Vocational Training",
+  "Educational Technology (EdTech)",
+  "Corporate Training",
+
+  // Manufacturing and Engineering
+  "Manufacturing",
+  "Automotive",
+  "Aerospace",
+  "Electrical and Electronics",
+  "Industrial Automation",
+  "Civil Engineering",
+  "Chemical Manufacturing",
+  "Robotics",
+
+  // Retail and Consumer Goods
+  "Retail",
+  "E-commerce",
+  "Consumer Goods",
+  "Fashion and Apparel",
+  "Luxury Goods and Jewelry",
+  "Food and Beverage",
+  "Supermarkets and Grocery Stores",
+
+  // Energy and Environment
+  "Energy",
+  "Renewable Energy",
+  "Oil and Gas",
+  "Utilities",
+  "Environmental Services",
+  "Sustainable Development",
+  "Waste Management",
+
+  // Media and Communication
+  "Media",
+  "Entertainment",
+  "Publishing",
+  "Broadcasting",
+  "Public Relations",
+  "Advertising",
+  "Digital Media",
+
+  // Law and Legal Services
+  "Legal Services",
+  "Corporate Law",
+  "Compliance",
+  "Intellectual Property",
+  "Mergers and Acquisitions",
+  "Dispute Resolution",
+
+  // Logistics and Supply Chain
+  "Logistics",
+  "Supply Chain Management",
+  "Transportation",
+  "Warehousing",
+  "Freight and Logistics",
+  "Shipping",
+
+  // Government and Public Sector
+  "Government",
+  "Public Administration",
+  "Defense and Space",
+  "Nonprofit Organization Management",
+  "International Affairs",
+
+  // Agriculture and Food Production
+  "Agriculture",
+  "Farming",
+  "Food Production",
+  "Horticulture",
+  "Forestry",
+  "Aquaculture",
+
+  // Miscellaneous
+  "Hospitality",
+  "Tourism",
+  "Real Estate",
+  "Sports",
+  "Culinary Arts",
+  "Event Management",
+  "Arts and Crafts",
   "Other",
 ];
 export const skills = [
@@ -310,11 +569,146 @@ export const skills = [
   { label: "Swift", value: "swift" },
   { label: "Kotlin", value: "kotlin" },
 
+  // Healthcare & Pharmaceuticals
+  { label: "Patient Counseling", value: "patient_counseling" },
+  { label: "Drug Interactions", value: "drug_interactions" },
+  { label: "Prescription Management", value: "prescription_management" },
+  { label: "FDA Compliance", value: "fda_compliance" },
+  { label: "Pharmacy Software", value: "pharmacy_software" },
+
+  // Operations & Management
+  { label: "Process Improvement", value: "process_improvement" },
+  { label: "Lean Six Sigma", value: "lean_six_sigma" },
+  { label: "Cost Optimization", value: "cost_optimization" },
+  { label: "ERP Systems", value: "erp_systems" },
+  { label: "Team Leadership", value: "team_leadership" },
+  { label: "Strategic Planning", value: "strategic_planning" },
+  { label: "Supply Chain Management", value: "supply_chain_management" },
+  { label: "Inventory Management", value: "inventory_management" },
+  { label: "Change Management", value: "change_management" },
+  { label: "Project Management", value: "project_management" },
+
+  // Law & Legal Services
+  { label: "Contract Drafting", value: "contract_drafting" },
+  { label: "Legal Research", value: "legal_research" },
+  { label: "Litigation", value: "litigation" },
+  { label: "Compliance Management", value: "compliance_management" },
+  { label: "Regulatory Compliance", value: "regulatory_compliance" },
+  { label: "Corporate Law", value: "corporate_law" },
+  { label: "Intellectual Property", value: "intellectual_property" },
+  { label: "Dispute Resolution", value: "dispute_resolution" },
+  { label: "Labor Law", value: "labor_law" },
+  { label: "Legal Writing", value: "legal_writing" },
+
   // Other Skills
   { label: "GraphQL", value: "graphql" },
   { label: "REST APIs", value: "restapis" },
   { label: "WebSockets", value: "websockets" },
   { label: "CI/CD Pipelines", value: "cicd" },
+
+  // Programming Languages (additional)
+  { label: "Perl", value: "perl" },
+  { label: "Scala", value: "scala" },
+  { label: "Shell Scripting", value: "shell_scripting" },
+
+  // Frontend Technologies (additional)
+  { label: "Bootstrap", value: "bootstrap" },
+  { label: "Ember.js", value: "emberjs" },
+  { label: "Svelte", value: "svelte" },
+
+  // Backend Technologies (additional)
+  { label: "Ruby on Rails", value: "rubyonrails" },
+  { label: "Laravel", value: "laravel" },
+  { label: "Phoenix Framework", value: "phoenix_framework" },
+
+  // Databases (additional)
+  { label: "Cassandra", value: "cassandra" },
+  { label: "MariaDB", value: "mariadb" },
+  { label: "Neo4j", value: "neo4j" },
+
+  // DevOps & Tools (additional)
+  { label: "Ansible", value: "ansible" },
+  { label: "Puppet", value: "puppet" },
+  { label: "Vagrant", value: "vagrant" },
+  { label: "Nagios", value: "nagios" },
+  { label: "Prometheus", value: "prometheus" },
+  { label: "Grafana", value: "grafana" },
+
+  // Testing Frameworks (additional)
+  { label: "TestNG", value: "testng" },
+  { label: "Appium", value: "appium" },
+  { label: "JUnit", value: "junit" },
+
+  // Data Science & Machine Learning (additional)
+  { label: "Hadoop", value: "hadoop" },
+  { label: "Spark", value: "spark" },
+  { label: "R Programming", value: "r_programming" },
+  { label: "D3.js", value: "d3js" },
+
+  // Mobile Development (additional)
+  { label: "Objective-C", value: "objective_c" },
+  { label: "Ionic", value: "ionic" },
+  { label: "Xamarin", value: "xamarin" },
+
+  // Healthcare & Pharmaceuticals (additional)
+  { label: "Clinical Trials Management", value: "clinical_trials_management" },
+  { label: "Pharmacovigilance", value: "pharmacovigilance" },
+  { label: "Healthcare Analytics", value: "healthcare_analytics" },
+
+  // Operations & Management (additional)
+  {
+    label: "Business Process Improvement",
+    value: "business_process_improvement",
+  },
+  { label: "Risk Management", value: "risk_management" },
+  { label: "Logistics Management", value: "logistics_management" },
+  { label: "Vendor Management", value: "vendor_management" },
+  { label: "Performance Metrics", value: "performance_metrics" },
+
+  // Law & Legal Services (additional)
+  { label: "E-Discovery", value: "e_discovery" },
+  { label: "Mergers and Acquisitions", value: "mergers_acquisitions" },
+  { label: "Contract Negotiation", value: "contract_negotiation" },
+  { label: "Due Diligence", value: "due_diligence" },
+  { label: "Case Management", value: "case_management" },
+
+  // Marketing & Sales
+  { label: "Search Engine Optimization (SEO)", value: "seo" },
+  { label: "Pay-Per-Click (PPC) Advertising", value: "ppc" },
+  { label: "Content Marketing", value: "content_marketing" },
+  { label: "Social Media Marketing", value: "social_media_marketing" },
+  { label: "Email Marketing", value: "email_marketing" },
+  { label: "Market Research", value: "market_research" },
+  { label: "CRM Management", value: "crm_management" },
+
+  // Finance & Accounting
+  { label: "Financial Modeling", value: "financial_modeling" },
+  { label: "Budget Management", value: "budget_management" },
+  { label: "Taxation", value: "taxation" },
+  { label: "Auditing", value: "auditing" },
+  { label: "Investment Analysis", value: "investment_analysis" },
+
+  // Design & Creative
+  { label: "Adobe Photoshop", value: "adobe_photoshop" },
+  { label: "Adobe Illustrator", value: "adobe_illustrator" },
+  { label: "Figma", value: "figma" },
+  { label: "Sketch", value: "sketch" },
+  { label: "UI/UX Design", value: "ui_ux_design" },
+  { label: "Video Editing", value: "video_editing" },
+
+  // Soft Skills
+  { label: "Team Collaboration", value: "team_collaboration" },
+  { label: "Conflict Resolution", value: "conflict_resolution" },
+  { label: "Critical Thinking", value: "critical_thinking" },
+  { label: "Time Management", value: "time_management" },
+  { label: "Leadership", value: "leadership" },
+  { label: "Emotional Intelligence", value: "emotional_intelligence" },
+
+  // Other Technical Skills
+  { label: "Blockchain Development", value: "blockchain_development" },
+  { label: "IoT (Internet of Things)", value: "iot" },
+  { label: "Robotic Process Automation (RPA)", value: "rpa" },
+  { label: "AR/VR Development", value: "ar_vr_development" },
 ];
 export const languages = ["English", "Spanish", "French", "German", "Chinese"];
 export const proficiencies = [
@@ -334,19 +728,126 @@ export const genders = ["Male", "Female", "Non-Binary", "Prefer not to say"];
 export const veteranStatuses = ["Yes", "No", "Prefer not to say"];
 
 export const fieldOfStudyOptions = [
+  // Technology and Engineering
   "Computer Science",
+  "Software Engineering",
   "Electrical Engineering",
   "Mechanical Engineering",
   "Civil Engineering",
+  "Biomedical Engineering",
+  "Aerospace Engineering",
+  "Chemical Engineering",
+  "Robotics",
+  "Data Science",
+  "Artificial Intelligence",
+  "Information Technology",
+  "Cybersecurity",
+  "Network Engineering",
+
+  // Business and Management
   "Business Administration",
+  "Finance",
+  "Marketing",
+  "Accounting",
+  "Human Resources Management",
+  "Entrepreneurship",
+  "Supply Chain Management",
+  "Operations Management",
+  "Project Management",
+  "International Business",
+  "Economics",
+
+  // Social Sciences and Humanities
   "Psychology",
+  "Sociology",
+  "Political Science",
+  "Anthropology",
+  "History",
+  "Philosophy",
+  "Cultural Studies",
+  "Linguistics",
+  "International Relations",
+  "Public Administration",
+
+  // Natural Sciences
   "Biology",
   "Physics",
+  "Chemistry",
+  "Environmental Science",
+  "Geology",
+  "Astronomy",
+  "Oceanography",
+  "Zoology",
+  "Botany",
+  "Biotechnology",
+  "Ecology",
+
+  // Mathematics and Statistics
   "Mathematics",
-  "Law",
-  "Economics",
+  "Statistics",
+  "Applied Mathematics",
+  "Actuarial Science",
+
+  // Healthcare and Medicine
   "Medicine",
-  // Add other options as needed
+  "Pharmacy",
+  "Nursing",
+  "Public Health",
+  "Veterinary Medicine",
+  "Physiotherapy",
+  "Nutrition and Dietetics",
+  "Healthcare Management",
+  "Dentistry",
+  "Optometry",
+
+  // Arts and Design
+  "Fine Arts",
+  "Graphic Design",
+  "Interior Design",
+  "Industrial Design",
+  "Fashion Design",
+  "Performing Arts",
+  "Film Studies",
+  "Music",
+  "Architecture",
+
+  // Law and Legal Studies
+  "Law",
+  "Criminology",
+  "Forensic Science",
+  "Legal Studies",
+  "International Law",
+
+  // Education
+  "Education",
+  "Curriculum and Instruction",
+  "Educational Technology",
+  "Special Education",
+  "Educational Leadership",
+
+  // Environmental and Agricultural Studies
+  "Environmental Engineering",
+  "Agriculture",
+  "Horticulture",
+  "Forestry",
+  "Fisheries Science",
+  "Sustainable Development",
+  "Wildlife Conservation",
+
+  // Media and Communication
+  "Journalism",
+  "Mass Communication",
+  "Public Relations",
+  "Digital Media",
+  "Advertising",
+
+  // Miscellaneous
+  "Liberal Arts",
+  "Sports Science",
+  "Hospitality Management",
+  "Tourism and Travel Management",
+  "Event Management",
+  "Culinary Arts",
 ];
 
 // const resumeData = {

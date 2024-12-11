@@ -9,59 +9,15 @@ import "react-pdf/dist/Page/TextLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const RightComponent = ({ jobDescription, companyInfo }) => {
+const RightComponent = ({ pdfFile, onBack }) => {
   const { toast } = useToast();
 
   const [state, setState] = useState("input"); // input | loading | success
-  const [pdfFile, setPdfFile] = useState(null);
   const [numPages, setNumPages] = useState(null); // Track number of pages in PDF
   const [error, setError] = useState(false);
 
   const pdfContainerRef = useRef(null);
   const parentRef = useRef(null);
-
-  const validateInput = () => {
-    return jobDescription.trim() !== "" && companyInfo.trim() !== "";
-  };
-
-  const createResume = async () => {
-    const response = await createResumeApi({
-      jobDescription,
-      aboutCompany: companyInfo,
-    });
-
-    console.log("Response:", response);
-    if (response.data) {
-      setPdfFile(response.data.pdfPath);
-      toast({
-        title: "Success",
-        description: `${response.data.message}`,
-        variant: "success",
-      });
-    }
-  };
-
-  const handleCreateResume = async () => {
-    try {
-      if (validateInput()) {
-        setState("loading");
-        await createResume();
-        setState("success");
-      } else {
-        alert("Please fill in both fields.");
-      }
-    } catch (error) {
-      console.error("Error posting data:", error);
-
-      toast({
-        title: "Error",
-        description: `${error.response?.data.error || "Something Went Wrong"}`,
-        variant: "destructive",
-      });
-      setState("input");
-      setPdfFile("");
-    }
-  };
 
   const handleDownloadPdf = () => {
     const link = document.createElement("a");
@@ -88,26 +44,9 @@ const RightComponent = ({ jobDescription, companyInfo }) => {
       pdfContainerRef.current.style.height = `${parentHeight - 150}px`; // Leave space for the button
     }
   }, [pdfFile, numPages]);
-
   return (
-    <div
-      ref={parentRef}
-      className="p-4 h-full flex flex-col items-center justify-center"
-    >
-      {state === "input" && (
-        <Button onClick={handleCreateResume} disabled={!validateInput()}>
-          Create Resume
-        </Button>
-      )}
-
-      {state === "loading" && (
-        <div className="flex flex-col items-center">
-          <Spinner className="w-8 h-8 mb-2" />
-          <p>Processing...</p>
-        </div>
-      )}
-
-      {state === "success" && (
+    <div className="flex flex-col items-center justify-center h-full">
+      {pdfFile ? (
         <>
           <div
             ref={pdfContainerRef}
@@ -135,7 +74,12 @@ const RightComponent = ({ jobDescription, companyInfo }) => {
             Download PDF
           </Button>
         </>
+      ) : (
+        <p className="text-red-500">Failed to load the resume.</p>
       )}
+      <Button className="mt-4" variant="secondary" onClick={onBack}>
+        Back to Edit
+      </Button>
     </div>
   );
 };
