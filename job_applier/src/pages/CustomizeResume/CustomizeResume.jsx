@@ -11,12 +11,11 @@ const CustomizeResume = () => {
   const { toast } = useToast();
   const [currentView, setCurrentView] = useState("input"); // input | loading | result
   const [jobDescription, setJobDescription] = useState("");
-  const [companyInfo, setCompanyInfo] = useState("");
   const [pdfFile, setPdfFile] = useState(null); // Store the generated PDF file
 
   const handleGenerateResume = async () => {
-    if (!jobDescription.trim() || !companyInfo.trim()) {
-      alert("Please fill in both fields before generating the resume.");
+    if (!jobDescription.trim()) {
+      alert("Please fill in fields before generating the resume.");
       return;
     }
 
@@ -25,7 +24,6 @@ const CustomizeResume = () => {
       // Call API to create the resume
       const response = await createResumeApi({
         jobDescription,
-        aboutCompany: companyInfo,
       });
 
       setPdfFile(response.data.pdfPath); // Assume the API returns a PDF path
@@ -56,8 +54,6 @@ const CustomizeResume = () => {
         <LeftComponent
           jobDescription={jobDescription}
           setJobDescription={setJobDescription}
-          companyInfo={companyInfo}
-          setCompanyInfo={setCompanyInfo}
         >
           <Button onClick={handleGenerateResume} className="mt-4">
             Generate Resume

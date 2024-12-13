@@ -99,7 +99,7 @@ const generateYamlFile = async (req, res) => {
 const generateOptimizedResume = async (req, res) => {
   const { id: userId } = req.user; // Authenticated user
 
-  const { jobDescription, aboutCompany } = req.body;
+  const { jobDescription, aboutCompany = "" } = req.body;
 
   try {
     // Fetch Profile

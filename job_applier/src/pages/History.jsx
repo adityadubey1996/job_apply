@@ -70,7 +70,7 @@ export default function ResumeHistory() {
 
   return (
     <div className="flex flex-col items-center justify-center h-full p-6 w-full">
-      <ScrollArea className="h-full w-full rounded-md border p-4">
+      <ScrollArea className="h-full rounded-md border p-4 sm:w-[calc(100%-20rem)]">
         {resumeHistory.map((resume) => (
           <Card key={resume.id} className="mb-4">
             <CardHeader>
