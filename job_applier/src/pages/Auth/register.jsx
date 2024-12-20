@@ -217,7 +217,7 @@ export function RegisterForm() {
             </span>
           </div>
         </div>
-        <div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <GoogleLogin
             onSuccess={handleGoogleResponse}
             onError={handleErrorResponse}
