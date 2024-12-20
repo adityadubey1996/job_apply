@@ -8,6 +8,7 @@ generated_resume/
 generated_resumes/
 temp_yamls/
 generated_yamls/
+*.log
 
 __pycache__/
 .DS_Store

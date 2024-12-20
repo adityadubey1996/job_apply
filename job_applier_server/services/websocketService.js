@@ -36,7 +36,7 @@ const sendToUser = (userId, event) => {
 const authenticateWebSocket = (req) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const token = url.searchParams.get("token");
-  console.log("token", token);
+
   if (!token) {
     throw new Error("No token provided");
   }
@@ -46,7 +46,6 @@ const authenticateWebSocket = (req) => {
       token,
       process.env.JWT_SECRET || "your_secret_key"
     );
-    console.log("Authenticated user:", decoded);
     return decoded;
   } catch (err) {
     throw new Error("Invalid or expired token");

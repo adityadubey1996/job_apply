@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-
 const authenticate = (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1]; // Bearer token
 
@@ -12,7 +11,7 @@ const authenticate = (req, res, next) => {
       token,
       process.env.JWT_SECRET || "your_secret_key"
     );
-    console.log("decoded", decoded);
+    console.log("decoded user from auth MiddleWare", decoded);
     req.user = decoded; // Add decoded user info to request object
     next();
   } catch (err) {

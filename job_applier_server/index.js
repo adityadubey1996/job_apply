@@ -1,4 +1,6 @@
 const dotenv = require("dotenv");
+const fs = require("fs");
+const path = require("path");
 dotenv.config();
 const express = require("express");
 const http = require("http");
@@ -13,6 +15,8 @@ const suggestionRoutes = require("./routes/suggestionRoutes");
 const connectDB = require("./config/dataBaseConnection");
 const cloudBucketService = require("./services/bucketService");
 const { setupWebSocket } = require("./services/websocketService");
+const morgan = require("morgan");
+
 connectDB();
 // Configure allowed origins and headers
 const allowedOrigins = [
@@ -47,8 +51,16 @@ app.use(
     credentials: true, // If you need to support cookies or authorization headers
   })
 );
-
+// Create a writable stream for logging errors
+const errorLogStream = fs.createWriteStream(path.join(__dirname, "error.log"), {
+  flags: "a", // Append to the file
+});
 app.use((err, req, res, next) => {
+  morgan(
+    `:method :url :status :res[content-length] - :response-time ms - Error: ${err.message}`,
+    { stream: errorLogStream }
+  )(req, res, () => {});
+
   console.error(err.stack);
   res.status(500).json({ error: "Something went wrong!" });
 });

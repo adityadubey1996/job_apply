@@ -7,6 +7,13 @@ export const fetchResumes = async () => {
   return response.data;
 };
 
+export const google = async (credentials) => {
+  const response = await axiosInstance.post("/api/auth/google", credentials);
+  const { token } = response.data;
+  localStorage.setItem("token", token); // Save token to local storage
+  return response.data;
+};
+
 export const login = async (credentials) => {
   const response = await axiosInstance.post("/api/auth/login", credentials);
   const { token } = response.data;

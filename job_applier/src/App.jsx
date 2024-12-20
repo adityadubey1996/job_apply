@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import LandingPage from "./pages/landingPage";
 import LinkedInEasyApplyDashboard from "./pages/AutoApplier";
+import { HelpComponent } from "./pages/components/helpComponent";
 // Wrapper to conditionally include sidebar
 const AppWrapper = () => {
   const navigate = useNavigate();
@@ -35,7 +36,11 @@ const AppWrapper = () => {
 
   return (
     <div className={`${shouldShowSidebar ? "flex min-h-screen w-screen" : ""}`}>
-      {shouldShowSidebar && <AppSidebar />}
+      {shouldShowSidebar && (
+        <>
+          <AppSidebar /> <HelpComponent />
+        </>
+      )}
       <div
         className={`${
           shouldShowSidebar

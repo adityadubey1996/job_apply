@@ -16,8 +16,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { login } from "../../api/api";
+import { google, login } from "../../api/api";
 import PasswordField from "../components/passwordFields";
+import { GoogleLogin } from "@react-oauth/google";
 const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
@@ -37,6 +38,7 @@ export function LoginForm() {
       password: "",
     },
   });
+  const [enableButton, setEnableButton] = React.useState(false);
 
   async function onSubmit(values) {
     try {
@@ -60,6 +62,77 @@ export function LoginForm() {
     }
   }
 
+  // const handleGoogleResponse = async (response) => {
+  //   try {
+  //     const token = response.credential;
+  //     console.log("Google Token:", token);
+
+  //     // Send token to backend
+  //     await google(JSON.stringify({ token }));
+
+  //     toast({
+  //       title: "Welcome!",
+  //       description: "You've successfully signed in with Google!",
+  //       variant: "success",
+  //     });
+  //   } catch (error) {
+  //     console.error("Google Sign-In Error:", error);
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to sign in with Google. Try again.",
+  //       variant: "destructive",
+  //     });
+  //   }
+  // };
+  function checkCookiesEnabled() {
+    document.cookie = "testcookie=1";
+    const cookiesEnabled = document.cookie.indexOf("testcookie") !== -1;
+
+    if (!cookiesEnabled) {
+      alert(
+        "Cookies are disabled in your browser. Please enable cookies to log in with Google OAuth."
+      );
+    }
+
+    // Optionally clear the test cookie
+    document.cookie =
+      "testcookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+
+  React.useEffect(() => {
+    checkCookiesEnabled();
+  }, []);
+
+  const handleGoogleResponse = async (response) => {
+    if (response.credential) {
+      console.log("Google ID Token:", response.credential);
+      await google({ token: response.credential });
+      // Send the ID token to your backend
+      toast({
+        title: "Welcome!",
+        description: "You've successfully signed in with Google!",
+        variant: "success",
+      });
+      navigate("/profile");
+    } else {
+      console.error("Google Sign-In Error:", response);
+      toast({
+        title: "Error",
+        description: "Google sign-in failed. Try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleErrorResponse = (response) => {
+    console.error("Google Sign-In Error:", response);
+
+    toast({
+      title: "Error",
+      description: "Google sign-in failed. Try again.",
+      variant: "destructive",
+    });
+  };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black">
       <div className="w-full max-w-md p-8 space-y-6 bg-gray-900 rounded-xl shadow-md">
@@ -73,10 +146,10 @@ export function LoginForm() {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your username"
+                      placeholder="Enter your email"
                       {...field}
                       className="bg-gray-800 text-white border border-gray-700 focus:ring-blue-500 focus:border-blue-500"
                     />
@@ -114,7 +187,7 @@ export function LoginForm() {
             </Button>
           </form>
         </Form>
-        {/* <div className="relative">
+        <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
           </div>
@@ -123,29 +196,11 @@ export function LoginForm() {
               Or continue with
             </span>
           </div>
-        </div> */}
-        {/* <Button
-          variant="outline"
-          className="w-full"
-          onClick={() => toast({ title: "Google Sign-In clicked" })}
-        >
-          <svg
-            className="mr-2 h-4 w-4"
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fab"
-            data-icon="google"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 488 512"
-          >
-            <path
-              fill="currentColor"
-              d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
-            ></path>
-          </svg>
-          Google
-        </Button> */}
+        </div>
+        <GoogleLogin
+          onSuccess={handleGoogleResponse}
+          onError={handleErrorResponse}
+        />
       </div>
     </div>
   );

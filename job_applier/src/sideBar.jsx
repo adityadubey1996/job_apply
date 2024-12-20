@@ -101,6 +101,7 @@ function SidebarComponent() {
           <Sidebar>
             <SidebarHeader className="border-b p-4 flex flex-row justify-between items-center">
               <h2 className="text-lg font-semibold">Tailor CV</h2>
+
               <Button
                 variant="ghost"
                 size="icon"
@@ -109,6 +110,7 @@ function SidebarComponent() {
                 <CircleHelp className="h-5 w-5" />
                 <span className="sr-only">help</span>
               </Button>
+
               <Button
                 variant="ghost"
                 size="icon"
