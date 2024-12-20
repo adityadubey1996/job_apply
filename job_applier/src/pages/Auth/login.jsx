@@ -197,10 +197,12 @@ export function LoginForm() {
             </span>
           </div>
         </div>
-        <GoogleLogin
-          onSuccess={handleGoogleResponse}
-          onError={handleErrorResponse}
-        />
+        <div>
+          <GoogleLogin
+            onSuccess={handleGoogleResponse}
+            onError={handleErrorResponse}
+          />
+        </div>
       </div>
     </div>
   );
