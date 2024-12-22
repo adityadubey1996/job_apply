@@ -36,7 +36,7 @@ const sendToUser = (userId, event) => {
 const authenticateWebSocket = (req) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   const token = url.searchParams.get("token");
-
+  console.log("token receoved for authenticateWebSocket", token);
   if (!token) {
     throw new Error("No token provided");
   }
@@ -48,6 +48,8 @@ const authenticateWebSocket = (req) => {
     );
     return decoded;
   } catch (err) {
+    console.log("error in decoding jwt token authenticateWebSocket", err);
+
     throw new Error("Invalid or expired token");
   }
 };

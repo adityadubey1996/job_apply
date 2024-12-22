@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import PasswordField from "../components/passwordFields";
 
 import axiosInstance from "../../api/axiosIntance";
-import { signup } from "../../api/api";
+import { google, signup } from "../../api/api";
 import { GoogleLogin } from "@react-oauth/google";
 
 const formSchema = z
