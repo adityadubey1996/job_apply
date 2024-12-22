@@ -56,6 +56,8 @@ const authenticateWebSocket = (req) => {
 
 const setupWebSocket = (server) => {
   const wss = new WebSocket.Server({ server });
+  console.log("server", server);
+  console.log("wss", wss);
 
   wss.on("connection", (ws, req) => {
     try {
