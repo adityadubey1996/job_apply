@@ -79,6 +79,10 @@ app.use("/api", suggestionRoutes);
 // Create HTTP server and wrap Express app
 const server = http.createServer(app);
 
+server.on("upgrade", (req, socket, head) => {
+  console.log("Upgrade request received:", req.url);
+});
+
 // Set up WebSocket with authentication
 setupWebSocket(server);
 
