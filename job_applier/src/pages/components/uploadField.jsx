@@ -222,14 +222,19 @@ export const UploadComponent = ({ onProcessSuccess }) => {
   };
 
   useEffect(() => {
-    webSocketManager.initialize(getServerUrl());
+    const initializeWebSocket = async () => {
+      try {
+        await webSocketManager.initialize(getServerUrl()); // Initialize WebSocket
 
-    webSocketManager.addConnectionHandler(handleConnectionState);
+        // Add handlers
+        webSocketManager.addConnectionHandler(handleConnectionState);
+        webSocketManager.addMessageHandler(handleMessage);
+      } catch (error) {
+        console.error("Failed to initialize WebSocket:", error);
+      }
+    };
 
-    // Add a message handler
-
-    webSocketManager.addMessageHandler(handleMessage);
-
+    initializeWebSocket();
     // Cleanup handlers on component unmount
     return () => {
       webSocketManager.removeConnectionHandler(handleConnectionState);

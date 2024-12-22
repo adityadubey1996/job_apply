@@ -147,31 +147,33 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
 
   // Add responsibility
   const appendResponsibility = (index, newResponsibility) => {
+    let formValues = {};
     setFormValues((prevValues) => {
       const updatedExperience = [...prevValues.experienceDetails];
       updatedExperience[index].responsibilities = [
         ...updatedExperience[index].responsibilities,
         newResponsibility,
       ];
+      formValues = updatedExperience;
       return { ...prevValues, experienceDetails: updatedExperience };
     });
 
-    validateExperienceFields(index);
+    validateExperienceFields(index, formValues);
   };
 
   // Remove responsibility
   const removeResponsibility = (index, respIndex) => {
-    let currentValue = {};
+    let formValues = {};
     setFormValues((prevValues) => {
       const updatedExperience = [...prevValues.experienceDetails];
       updatedExperience[index].responsibilities = updatedExperience[
         index
       ].responsibilities.filter((_, i) => i !== respIndex);
-      currentValue = { ...prevValues, experienceDetails: updatedExperience };
+      formValues = { ...prevValues, experienceDetails: updatedExperience };
       return { ...prevValues, experienceDetails: updatedExperience };
     });
 
-    validateExperienceFields(index, currentValue);
+    validateExperienceFields(index, formValues);
   };
 
   // Add new experience entry
@@ -204,60 +206,63 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
   };
 
   // Validate individual experience entry
-  const validateExperienceFields = (index, currentValue) => {
-    const newErrors = [...experienceErrors];
-    const experience = currentValue
-      ? currentValue.experienceDetails[index]
-      : formValues.experienceDetails[index];
-
-    newErrors[index] = {}; // Initialize or reset errors for this entry
+  const validateExperienceFields = (index = null, currentValue) => {
+    const newErrors = formValues.experienceDetails.map(() => ({}));
     let isValid = true;
 
-    if (!experience.position || experience.position.trim() === "") {
-      newErrors[index].position = "Position is required";
-      isValid = false;
-    }
-    if (!experience.company || experience.company.trim() === "") {
-      newErrors[index].company = "Company is required";
-      isValid = false;
-    }
-    if (!experience.startDate) {
-      newErrors[index].startDate = "Start date is required";
-      isValid = false;
-    }
-    if (!experience.endDate) {
-      newErrors[index].endDate = "End date is required";
-      isValid = false;
-    }
-    if (experience.startDate && experience.endDate) {
-      const startDate = new Date(experience.startDate);
-      const endDate = new Date(experience.endDate);
-      if (startDate > endDate) {
-        newErrors[index].startDate = "Start date must be before the end date";
-        newErrors[index].endDate = "End date must be after the start date";
+    currentValue.experienceDetails.forEach((experience, index) => {
+      newErrors[index] = {}; // Initialize or reset errors for this entry
+
+      if (!experience.position || experience.position.trim() === "") {
+        newErrors[index].position = "Position is required";
         isValid = false;
       }
-    }
-    if (!experience.location || experience.location.trim() === "") {
-      newErrors[index].location = "Location is required";
-      isValid = false;
-    }
-    if (!experience.industry || experience.industry.trim() === "") {
-      newErrors[index].industry = "Industry is required";
-      isValid = false;
-    }
-    if (
-      experience.responsibilities.length === 0 ||
-      experience.responsibilities.some((resp) => !resp.trim())
-    ) {
-      newErrors[index].responsibilities =
-        "At least one responsibility is required";
-      isValid = false;
-    }
-    if (!experience.skillsAcquired || experience.skillsAcquired.length === 0) {
-      newErrors[index].skillsAcquired = "At least one skill is required";
-      isValid = false;
-    }
+      if (!experience.company || experience.company.trim() === "") {
+        newErrors[index].company = "Company is required";
+        isValid = false;
+      }
+      if (!experience.startDate) {
+        newErrors[index].startDate = "Start date is required";
+        isValid = false;
+      }
+      if (!experience.endDate) {
+        newErrors[index].endDate = "End date is required";
+        isValid = false;
+      }
+      if (experience.startDate && experience.endDate) {
+        const startDate = new Date(experience.startDate);
+        const endDate = new Date(experience.endDate);
+        if (startDate > endDate) {
+          newErrors[index].startDate = "Start date must be before the end date";
+          newErrors[index].endDate = "End date must be after the start date";
+          isValid = false;
+        }
+      }
+      if (!experience.location || experience.location.trim() === "") {
+        newErrors[index].location = "Location is required";
+        isValid = false;
+      }
+      if (!experience.industry || experience.industry.trim() === "") {
+        newErrors[index].industry = "Industry is required";
+        isValid = false;
+      }
+      if (
+        experience.responsibilities.length === 0 ||
+        experience.responsibilities.some((resp) => !resp.trim())
+      ) {
+        newErrors[index].responsibilities =
+          "At least one responsibility is required";
+        isValid = false;
+      }
+      if (
+        !experience.skillsAcquired ||
+        experience.skillsAcquired.length === 0
+      ) {
+        newErrors[index].skillsAcquired = "At least one skill is required";
+        isValid = false;
+      }
+    });
+    console.log("experience error from validation function", newErrors);
 
     setExperienceErrors(newErrors);
     return isValid;
@@ -266,9 +271,10 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
   // Validate all experience entries
   const validateAllExperienceFields = () => {
     let isValid = true;
-    formValues.experienceDetails.forEach((_, index) => {
-      if (!validateExperienceFields(index)) isValid = false;
-    });
+    if (!validateExperienceFields(null, formValues)) isValid = false;
+    // formValues.experienceDetails.forEach((_, index) => {
+
+    // });
     return isValid;
   };
 
@@ -424,7 +430,9 @@ export default function ResumeForm({ profileData, onGoToOptions }) {
   const validateEducationFields = () => {
     const newErrors = formValues.educationDetails.map((education) => ({}));
     let isValid = true;
+    console.log("formValues from validateEducationFields", formValues);
 
+    console.log("newErrors from validateEducationFields", newErrors);
     formValues.educationDetails.forEach((education, index) => {
       if (!education.degree || education.degree.trim() === "") {
         newErrors[index].degree = "Degree is required";

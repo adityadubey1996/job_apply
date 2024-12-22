@@ -7,7 +7,7 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const google = async (req, res) => {
   const { token } = req.body;
-
+  const userIdFromMiddleware = req.user?.id;
   try {
     // Verify Google ID token
     const ticket = await googleClient.verifyIdToken({
@@ -18,15 +18,29 @@ const google = async (req, res) => {
     const payload = ticket.getPayload();
     const { email, name, picture } = payload;
 
-    // Check if user exists, otherwise create one
     let user = await User.findOne({ email });
-    if (!user) {
+
+    if (user) {
+      if (user.guest) {
+        // Upgrade guest user to registered user
+        user.guest = false;
+        user.name = name || user.name; // Update name if available
+        user.picture = picture || user.picture; // Update picture if available
+        await user.save();
+      }
+    } else {
+      // Create a new user with the same ID from middleware, if provided
+      const newUserId = userIdFromMiddleware || new mongoose.Types.ObjectId(); // Use middleware ID or generate a new one
+
       user = new User({
+        _id: newUserId, // Set the custom ID
         name,
         email,
         picture,
         password: "googleLogin", // No password since Google manages it
+        guest: false, // Explicitly set guest to false
       });
+
       await user.save();
     }
 
@@ -41,7 +55,7 @@ const google = async (req, res) => {
 
     res.json({ token: jwtToken });
   } catch (err) {
-    console.error(err);
+    console.error("Google authentication failed:", err.message);
     res.status(500).json({ error: "Google authentication failed" });
   }
 };
@@ -55,16 +69,22 @@ const register = async (req, res) => {
       return res.status(400).json({ error: "Email already in use" });
     }
 
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ error: "Something Terribly went wrong" });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPassword,
-    });
+    user = { ...user, email, name, password: hashedPassword };
+    // const newUser = new User({
+    //   name,
+    //   email,
+    //   password: hashedPassword,
+    // });
 
-    await newUser.save();
-    res.status(201).json(newUser);
+    await user.save();
+    res.status(201).json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -80,6 +100,11 @@ const login = async (req, res) => {
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    if (user.guest) {
+      user.guest = false;
+      await user.save();
     }
 
     const token = jwt.sign(

@@ -17,4 +17,12 @@ export default defineConfig({
     host: "0.0.0.0", // Allow external access for preview
     port: 5173, // Port for preview server
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: "esnext",
+    },
+  },
+  build: {
+    target: "esnext",
+  },
 });

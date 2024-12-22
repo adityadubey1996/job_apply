@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { getToken } from "../tokenService";
 
 export const useAuthenticatedWebSocket = (
   serverUrl,
@@ -24,55 +25,64 @@ export const useAuthenticatedWebSocket = (
   );
 
   useEffect(() => {
-    if (!serverUrl) return;
+    const initializeWebsocketservices = async () => {
+      if (!serverUrl) return;
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found. Please log in.");
-      return;
-    }
-
-    if (socketRef.current) {
-      console.log("WebSocket already initialized");
-      return;
-    }
-
-    const wsUrl = `${serverUrl}?token=${token}`;
-    const ws = new WebSocket(wsUrl);
-
-    ws.onopen = () => {
-      console.log("isConnectedRef.current in onOpen", isConnectedRef.current);
-      if (!isConnectedRef.current) {
-        isConnectedRef.current = true;
-
-        console.log("isConnectedRef.current in onOpen", isConnectedRef.current);
-        isConnectedCallBack(true);
-        // setIsConnected(true); // to update the hook state for the
+      const token = await getToken();
+      if (!token) {
+        console.error("No token found. Please log in.");
+        return;
       }
-      console.log("WebSocket connected");
-    };
 
-    ws.onmessage = handleWebSocketMessage;
+      if (socketRef.current) {
+        console.log("WebSocket already initialized");
+        return;
+      }
 
-    ws.onclose = () => {
-      console.log("isConnectedRef.current in onclose", isConnectedRef.current);
-      if (isConnectedRef.current) {
-        isConnectedRef.current = false;
+      const wsUrl = `${serverUrl}?token=${token}`;
+      const ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        console.log("isConnectedRef.current in onOpen", isConnectedRef.current);
+        if (!isConnectedRef.current) {
+          isConnectedRef.current = true;
+
+          console.log(
+            "isConnectedRef.current in onOpen",
+            isConnectedRef.current
+          );
+          isConnectedCallBack(true);
+          // setIsConnected(true); // to update the hook state for the
+        }
+        console.log("WebSocket connected");
+      };
+
+      ws.onmessage = handleWebSocketMessage;
+
+      ws.onclose = () => {
         console.log(
           "isConnectedRef.current in onclose",
           isConnectedRef.current
         );
-        isConnectedCallBack(false);
-        // setIsConnected(false);
-      }
-      console.log("WebSocket disconnected");
-    };
+        if (isConnectedRef.current) {
+          isConnectedRef.current = false;
+          console.log(
+            "isConnectedRef.current in onclose",
+            isConnectedRef.current
+          );
+          isConnectedCallBack(false);
+          // setIsConnected(false);
+        }
+        console.log("WebSocket disconnected");
+      };
 
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
+      ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
 
-    socketRef.current = ws;
+      socketRef.current = ws;
+    };
+    initializeWebsocketservices();
 
     return () => {
       ws.close();

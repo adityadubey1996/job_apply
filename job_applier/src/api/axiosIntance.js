@@ -2,6 +2,7 @@ import axios from "axios";
 // import { useToast } from "@/hooks/use-toast";
 import { navigateToLogin as navigationWrapper } from "../services/navigationService";
 import { getServerUrl } from "./config";
+import { getToken } from "../tokenService";
 // const { toast } = useToast();
 
 const navigateToLogin = () => {
@@ -17,9 +18,10 @@ const axiosInstance = axios.create({
 
 // Add a request interceptor to attach the token
 axiosInstance.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // Add Authorization token to headers if available
-    const token = localStorage.getItem("token"); // Replace with your token storage logic
+    const token = await getToken(); // Replace with your token storage logic
+    console.log("token from axiosInstance.interceptors.request", token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -50,6 +52,7 @@ axiosInstance.interceptors.response.use(
             "Unauthorized:",
             "Your session has expired. Please log in again."
           );
+          localStorage.clear();
           navigateToLogin();
           break;
         case 403:

@@ -5,12 +5,13 @@ const {
   logout,
   google,
 } = require("../controllers/authController");
+const authenticate = require("../middleware/authenticate");
 
 const router = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
-router.post("/logout", logout);
-router.post("/google", google);
+router.post("/register", authenticate, register);
+router.post("/login", authenticate, login);
+router.post("/logout", authenticate, logout);
+router.post("/google", authenticate, google);
 
 module.exports = router;

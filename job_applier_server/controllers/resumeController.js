@@ -1,6 +1,6 @@
-const fs = require("fs");
+const fs = require("fs/promises");
 const path = require("path");
-const yaml = require("js-yaml");
+const yaml = require("yaml");
 const Profile = require("../models/Profile");
 const Resume = require("../models/Resume");
 const ResumeGenerator = require("../resumeGenerator");
@@ -21,15 +21,20 @@ const generateYaml = async (
   { tempFilePath, tempDir, fileName }
 ) => {
   // Convert the object into YAML format
-  const yamlContent = yaml.dump(resumeData);
+  const yamlContent = yaml.stringify(resumeData);
 
   // Ensure the temporary directory exists
-  if (!fs.existsSync(tempDir)) {
-    fs.mkdirSync(tempDir, { recursive: true });
-  }
+  // if (!fs.existsSync(tempDir)) {
+  //   fs.mkdirSync(tempDir, { recursive: true });
+  // }
+  (async () => {
+    if (!(await fs.stat(tempDir).catch(() => false))) {
+      await fs.mkdir(tempDir, { recursive: true });
+    }
 
-  // Write the YAML content to the temporary file
-  fs.writeFileSync(tempFilePath, yamlContent, "utf8");
+    // Write the YAML content to the temporary file
+    await fs.writeFile(tempFilePath, yamlContent, "utf8");
+  })();
 
   // Upload the file to Google Cloud Storage
   return await cloudBucketService.createYamlFileForProfile(
@@ -149,7 +154,19 @@ const generateOptimizedResume = async (req, res) => {
     );
 
     const optimizedYamlPath = await generator.optimizeResume(jobDescription);
-    const pdfPath = await generator.generatePDF(optimizedYamlPath);
+    if (!optimizedYamlPath) {
+      throw new Error("AI-Generated YAML file path is required.");
+    }
+    console.log(
+      `Reading AI-Generated YAML file from path: ${optimizedYamlPath}`
+    );
+
+    const fileContent = await fs.readFile(optimizedYamlPath, "utf8");
+    const data = yaml.parse(fileContent);
+    if (!data) {
+      throw new Error("AI-Generated YAML No Data Found.");
+    }
+    const pdfPath = await generator.generatePDF(data);
 
     // Update Resume entry with generated paths
     newResume.optimizedYamlPath = optimizedYamlPath;
@@ -158,6 +175,8 @@ const generateOptimizedResume = async (req, res) => {
       pdfPath,
       "pdfPath"
     );
+    newResume.atsData = data.ATS_Score_Check || {};
+
     await newResume.save();
 
     res.status(200).json({

@@ -61,7 +61,7 @@ export default function LandingPage() {
               size="lg"
               className="bg-teal-600 hover:bg-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
               onClick={() => {
-                navigate("/login");
+                navigate("/profile");
               }}
             >
               Start Your Journey

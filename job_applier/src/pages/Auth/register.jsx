@@ -74,7 +74,7 @@ export function RegisterForm() {
   const handleGoogleResponse = async (response) => {
     if (response.credential) {
       console.log("Google ID Token:", response.credential);
-      await google({ token: response.credential });
+      await google({ token: response.credential, isRegister: true });
       // Send the ID token to your backend
       toast({
         title: "Welcome!",

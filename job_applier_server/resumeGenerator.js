@@ -54,154 +54,148 @@ class ResumeGenerator {
     }
   };
 
-  async createLaTeXContent(aiGeneratedYamlFilePath, dateFormat = "MM-YYYY") {
+  async createLaTeXContent(data, dateFormat = "MM-YYYY") {
     try {
-      console.log(
-        `Reading AI-Generated YAML file from path: ${aiGeneratedYamlFilePath}`
-      );
-      const fileContent = await fs.readFile(aiGeneratedYamlFilePath, "utf8");
-      const data = yaml.parse(fileContent);
-
       let latexContent = `
-  \\documentclass[11pt,a4paper,sans,colorlinks=true,linkcolor=blue,pdfpagelabels=false]{moderncv}
-  \\moderncvstyle{banking}
-  \\moderncvcolor{blue}
-  \\usepackage[scale=0.8]{geometry}
-  \\usepackage[utf8]{inputenc}
-  
-  \\name{${data.personal_information?.name || ""}}{${
+\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage{geometry}
+\\geometry{a4paper, margin=1in}
+\\usepackage{hyperref}
+\\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+\\usepackage{enumitem}
+\\setlist{nosep}
+\\pagenumbering{gobble}
+\\usepackage{fontawesome}
+
+\\begin{document}
+
+\\begin{center}
+\\textbf{\\Huge ${data.personal_information?.name || ""} ${
         data.personal_information?.surname || ""
-      }}
-  \\title{Experienced Professional in Software Engineering}
-  \\address{${data.personal_information?.address || ""}}{${
-        data.personal_information?.city || ""
-      }}{${data.personal_information?.country || ""}}
-  \\phone[mobile]{${data.personal_information?.phonePrefix || ""}${
+      }} \\\\
+\\vspace{5pt}
+\\textit{${data.personal_information?.title || "Technical Lead"}} \\\\
+\\vspace{5pt}
+\\href{mailto:${data.personal_information?.email || ""}}{${
+        data.personal_information?.email || ""
+      }} \\\\
+\\href{tel:${data.personal_information?.phonePrefix || ""}${
         data.personal_information?.phoneNumber || ""
-      }}
-  \\email{${data.personal_information?.email || ""}}
-  \\social[linkedin]{${data.personal_information?.linkedin || ""}}
-  \\social[github]{${data.personal_information?.github || ""}}
-  
-  \\begin{document}
-  \\makecvtitle
-  `;
+      }}{${data.personal_information?.phonePrefix || ""}${
+        data.personal_information?.phoneNumber || ""
+      }} \\\\
+\\vspace{5pt}
+${
+  data.personal_information?.linkedin
+    ? `\\faLinkedin \\href{https://linkedin.com/in/${data.personal_information.linkedin}}{linkedin.com/in/${data.personal_information.linkedin}} \\\\`
+    : ""
+}
+${
+  data.personal_information?.github
+    ? `\\faGithub \\href{https://github.com/${data.personal_information.github}}{github.com/${data.personal_information.github}} \\\\`
+    : ""
+}
+\\end{center}
 
-      // Professional Summary
-      if (data.professional_summary?.summary) {
-        latexContent += `
-  \\section{Professional Summary}
-  ${data.professional_summary.summary}
-  `;
-      }
+\\vspace{10pt}
 
-      // Skills
+% Professional Summary
+\\section*{Professional Summary   \\vspace{10pt}}
+${data.professional_summary?.summary || "No professional summary available."}
+
+\\vspace{10pt}
+
+% Skills Section
+\\section*{Skills   \\vspace{10pt}}
+\\begin{itemize}[leftmargin=*]
+`;
       if (data.skills?.length) {
-        latexContent += `
-  \\section{Skills}
-  \\cvitem{}{\\begin{itemize}
-  `;
         data.skills.forEach((skill) => {
-          latexContent += `\\item ${skill}\n`;
+          latexContent += `  \\item ${skill}\n`;
         });
-        latexContent += `\\end{itemize}}
-  `;
+      } else {
+        latexContent += "  \\item No skills listed.\n";
       }
+      latexContent += `
+\\end{itemize}
 
-      // Education
-      if (data.education_details?.length) {
-        latexContent += `
-  \\section{Education}
-  `;
-        data.education_details.forEach((edu) => {
-          latexContent += `\\cventry{${this.formatDate(
-            edu.graduation_year,
-            "YYYY"
-          )}}{${edu.degree || ""}}{${edu.university || ""}}{${
-            edu.field_of_study || ""
-          }}{}{}\n`;
-        });
-      }
+\\vspace{10pt}
 
-      // Experience
+% Professional Experience
+\\section*{Professional Experience   \\vspace{10pt}}
+`;
       if (data.experience_details?.length) {
-        latexContent += `
-  \\section{Experience}
-  `;
-        data.experience_details.forEach((job) => {
+        data.experience_details.forEach((job, index) => {
           const [startDate, endDate] =
             job.employment_period?.split(" - ") || [];
-          latexContent += `\\cventry{${this.formatDate(
-            startDate,
-            dateFormat
-          )} -- ${this.formatDate(endDate, dateFormat)}}{${
-            job.position || ""
-          }}{${job.company || ""}}{${job.location || ""}}{}{\n\\begin{itemize}
-  `;
+          latexContent += `
+\\textbf{${job.position || "N/A"} (${job.company || "N/A"})} \\hfill \\textit{${
+            job.location || "N/A"
+          } | ${this.formatDate(startDate, dateFormat) || ""} -- ${
+            this.formatDate(endDate, dateFormat) || "Present"
+          }} \\\\
+\\begin{itemize}[leftmargin=*]
+`;
           job.key_responsibilities?.forEach((resp) => {
-            latexContent += `\\item ${resp}\n`;
+            latexContent += `  \\item ${resp}\n`;
           });
-          latexContent += `\\end{itemize}}\n`;
-        });
-      }
-
-      // Projects
-      if (data.projects?.length) {
-        latexContent += `
-  \\section{Projects}
-  `;
-        data.projects.forEach((project) => {
-          latexContent += `\\cvitem{${project.name || ""}}{${
-            project.description || ""
-          }}\n`;
-          if (project.link) {
-            latexContent += `\\cvitem{}{\\href{${project.link}}{Project Link}}\n`;
+          latexContent += `
+\\end{itemize}
+`;
+          // Add consistent spacing between jobs, but avoid extra space at the end
+          if (index < data.experience_details.length - 1) {
+            latexContent += "\\vspace{10pt}\n";
           }
         });
+      } else {
+        latexContent += "No professional experience listed.\n";
       }
 
-      // Certifications
-      if (data.certifications?.length) {
-        latexContent += `
-  \\section{Certifications}
-  `;
-        data.certifications.forEach((cert) => {
-          latexContent += `\\cvitem{${cert.name || ""}}{${
-            cert.organization || ""
-          }${cert.year ? ` (${cert.year})` : ""}}\n`;
+      // Projects Section
+      latexContent += `
+\\section*{Projects   \\vspace{10pt}}
+`;
+      if (data.projects?.length) {
+        data.projects.forEach((project) => {
+          latexContent += `
+\\begin{itemize}[leftmargin=*]
+\\item \\textbf{${project.name || "N/A"}}: ${project.description || "N/A"}
+`;
+          if (project.link) {
+            latexContent += `  \\item \\href{${project.link}}{Project Link}\n`;
+          }
+          latexContent += `
+\\end{itemize}
+`;
         });
+      } else {
+        latexContent += "No projects listed.\n";
       }
 
-      // Achievements
-      if (data.achievements?.length) {
-        latexContent += `
-  \\section{Achievements}
-  `;
-        data.achievements.forEach((achieve) => {
-          latexContent += `\\cvitem{${achieve.name || ""}}{${
-            achieve.description || ""
-          }}\n`;
+      // Education Section
+      latexContent += `
+\\section*{Education   \\vspace{10pt}}
+`;
+      if (data.education_details?.length) {
+        data.education_details.forEach((edu) => {
+          latexContent += `
+\\textbf{${edu.degree || "N/A"}, ${edu.field_of_study || "N/A"}} \\hfill ${
+            edu.university || "N/A"
+          } \\\\
+\\hfill Graduation: ${
+            this.formatDate(edu.graduation_year, "YYYY") || "N/A"
+          } \\\\
+\\vspace{5pt}
+`;
         });
-      }
-
-      // Languages
-      if (data.languages?.length) {
-        latexContent += `
-  \\section{Languages}
-  \\cvitem{}{\\begin{itemize}
-  `;
-        data.languages.forEach((lang) => {
-          latexContent += `\\item ${lang.language || ""}: ${
-            lang.proficiency || "Not Specified"
-          }\n`;
-        });
-        latexContent += `\\end{itemize}}
-  `;
+      } else {
+        latexContent += "No education details listed.\n";
       }
 
       latexContent += `
-  \\end{document}
-  `;
+\\end{document}
+`;
       return latexContent;
     } catch (error) {
       console.error("Error creating LaTeX content:", error);
@@ -209,13 +203,8 @@ class ResumeGenerator {
     }
   }
 
-  async generatePDF(aiGeneratedYamlFilePath) {
+  async generatePDF(data) {
     try {
-      if (!aiGeneratedYamlFilePath) {
-        throw new Error("AI-Generated YAML file path is required.");
-      }
-      console.log("aiGeneratedYamlFilePath", aiGeneratedYamlFilePath);
-
       const timestamp = new Date().toISOString().replace(/[-:.]/g, "_");
       const texFilename = path.join(
         this.outputFolder,
@@ -227,9 +216,8 @@ class ResumeGenerator {
       );
 
       console.log("Generating LaTeX content for PDF...");
-      const latexContent = await this.createLaTeXContent(
-        aiGeneratedYamlFilePath
-      );
+
+      const latexContent = await this.createLaTeXContent(data);
 
       await fs.mkdir(this.outputFolder, { recursive: true });
       await fs.writeFile(texFilename, latexContent, "utf8");
@@ -299,6 +287,7 @@ class ResumeGenerator {
   createPrompt(jobDescription) {
     const extractedData = this.data;
     console.log("extractedData", extractedData);
+
     return {
       context: [
         {
@@ -331,8 +320,9 @@ class ResumeGenerator {
           section: "experience_details",
           details: [
             "For each relevant role, include 'position', 'company', 'employment_period', 'location', and 'industry'.",
-            "Emphasize responsibilities and achievements that align with the job description. For example, highlight administrative tasks, communication duties, organizational responsibilities, or any form of documentation or research that can be relevant.",
+            "Emphasize responsibilities and achievements that align with the job description (e.g., highlight administrative tasks, communication duties, organizational responsibilities, or any form of documentation or research).",
             "If no experience is directly related, select only transferable duties from the roles. Omit purely technical responsibilities that do not fit the job description.",
+            "If you have experience that is not obviously relevant, you may still list the role to avoid gaps. In such cases, only include position, company, and employment period, and highlight any potentially transferable aspects (e.g., teamwork, communication, client engagement, or project management). If there truly is nothing transferable, provide minimal placeholders under 'key_responsibilities' or skip them entirely.",
             "Provide 'key_responsibilities' as bullet points, focusing on duties that could be useful in the target role.",
             "Under 'skills_acquired', list only those skills gained that are relevant. If none are relevant, leave this array minimal or empty.",
           ],
@@ -379,116 +369,6 @@ class ResumeGenerator {
       response_format:
         'Please respond only with the following strict JSON structure, without any extra explanation or formatting:\n\n{\n  "personal_information": {...},\n  "professional_summary": {"summary": "..."},\n  "skills": [...],\n  "experience_details": [{...}],\n  "education_details": [{...}],\n  "certifications": [...],\n  "projects": [{...}],\n  "achievements": [{...}],\n  "languages": [{...}],\n  "ATS_Score_Check": {"score": ..., "improvement_suggestions": [...]} \n}',
     };
-
-    //   return {
-    //     context: [
-
-    //       {
-    //         task: "Resume Optimization",
-    //         objective:
-    //           "Reorganize and optimize the provided resume data to align with the job description.",
-    //       },
-    //       {
-    //         instruction:
-    //           "Do not create fake information. Only use data from the 'extractedData' and reorganize it to increase the ATS score." +
-    //           "The `jobDescription` describes the target role. Review it carefully." +
-    //           "Highlight and emphasize only those skills, experiences, projects, and achievements from `extractedData` that are directly relevant or transferable to the described role." +
-    //           "If certain information (e.g., technical skills) is irrelevant to the `jobDescription`, omit it or keep it minimal." +
-    //           "Use only the information provided in `extractedData`." +
-    //  "Do not invent, alter, or add new information that isn't present in `extractedData`" +
-
-    //           "If no directly related content exists for a section, present only what is available and truly relevant. If nothing relevant exists, leave that section empty or with a minimal truthful placeholder (e.g., empty arrays or empty strings)."
-    //       },
-    //     ],
-    //     sections: [
-    //       {
-    //         section: "personal_information",
-    //         details:
-    //           "Provide details including 'name', 'surname', 'date_of_birth', 'country', 'city', 'address', " +
-    //           "'phone_prefix', 'phone', 'email', 'github', and 'linkedin'. " +
-    //           "Ensure each field is filled accurately and professionally.",
-    //       },
-    //       {
-    //         section: "professional_summary",
-    //         details:
-    //           "Provide a 'summary' field with a concise and ATS-optimized professional summary, " +
-    //           "emphasizing relevant skills, experience, and specific achievements that align with the job description." +
-    //           "Craft a concise summary emphasizing relevant skills and achievements from 'extractedData' that align with the 'jobDescription'. Avoid generic statements and prioritize job-specific keywords.",
-    //       },
-    //       {
-    //         section: "skills",
-    //         details:
-    //           "List relevant skills as individual items in an array, using ATS-friendly terminology. " +
-    //           "Ensure each skill directly relates to the job description." +
-    //           "Extract relevant skills from 'extractedData' that directly match the 'jobDescription'. List them as ATS-friendly terms.",
-    //       },
-    //       {
-    //         section: "experience_details",
-    //         details: [
-    //           "For each role, include 'position', 'company', 'employment_period', 'location', and 'industry' fields. ",
-    //           "Reorganize experience data to emphasize roles, achievements, and skills relevant to the 'jobDescription'. Use action verbs and quantify achievements wherever possible.",
-    //           "Provide an array of 'key_responsibilities' with bullet-point achievements and responsibilities that are ATS-optimized, using quantified achievements where possible.",
-    //           "Add an array of 'skills_acquired' relevant to each role, with each skill listed individually.",
-    //         ],
-    //       },
-    //       {
-    //         section: "education_details",
-    //         details:
-    //           "Include 'degree', 'university', 'gpa', 'graduation_year', and 'field_of_study' fields. " +
-    //           "Provide an array of 'courses' with each course listed as a key-value pair, where the key is the course name and the value is the grade." +
-    //           "Ensure education details are complete and professional. Include only relevant courses that align with the 'jobDescription'.",
-    //       },
-    //       {
-    //         section: "certifications",
-    //         details:
-    //           "Provide each certification as a string in an array, retaining original names and issuing organizations." +
-    //           "Highlight certifications that are relevant to the 'jobDescription'. Exclude unrelated certifications.",
-    //       },
-    //       {
-    //         section: "projects",
-    //         details: [
-    //           "List projects as objects with 'name', 'description', and 'link' fields. ",
-    //           "Ensure each project highlights relevant technologies and outcomes.",
-    //           "Reorganize project details to focus on technologies, outcomes, and relevance to the 'jobDescription'.",
-    //         ],
-    //       },
-    //       {
-    //         section: "achievements",
-    //         details: [
-    //           "Provide achievements as objects with 'name' and 'description' fields. ",
-    //           "List achievements related to the 'jobDescription', emphasizing measurable outcomes and relevance.",
-    //         ],
-    //       },
-    //       {
-    //         section: "languages",
-    //         details:
-    //           ("List languages as objects, each containing 'language' and 'proficiency' fields. ",
-    //           "Use terminology like 'Professional', 'Fluent', or 'Native' to indicate proficiency."),
-    //       },
-    //       {
-    //         section: "ATS_Score_Check",
-    //         details:
-    //           "At the end, include an 'ATS_Score_Check' field with 'score' and 'improvement_suggestions'. " +
-    //           "Provide an overall ATS score as a numeric value, and suggest further improvements for keyword density, action verbs, and quantifiable achievements.",
-    //       },
-    //     ],
-    //     job_description: jobDescription,
-    //     response_format:
-    //       "Please respond only with the following strict JSON structure, without any extra explanation or formatting:\n\n" +
-    //       "{\n" +
-    //       '  "personal_information": {...},\n' +
-    //       '  "professional_summary": {"summary": "..."},\n' +
-    //       '  "skills": [...],\n' +
-    //       '  "experience_details": [{...}],\n' +
-    //       '  "education_details": [{...}],\n' +
-    //       '  "certifications": [...],\n' +
-    //       '  "projects": [{...}],\n' +
-    //       '  "achievements": [{...}],\n' +
-    //       '  "languages": [{...}],\n' +
-    //       '  "ATS_Score_Check": {"score": ..., "improvement_suggestions": [...]} \n' +
-    //       "}",
-    //     user_resume: extractedData,
-    //   };
   }
 
   extractRelevantContent() {

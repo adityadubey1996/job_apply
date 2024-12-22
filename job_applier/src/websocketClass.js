@@ -1,3 +1,5 @@
+import { getToken } from "./tokenService";
+
 class WebSocketManager {
   constructor() {
     this.socket = null; // WebSocket instance
@@ -10,19 +12,19 @@ class WebSocketManager {
    * Initialize the WebSocket connection
    * @param {string} serverUrl - The WebSocket server URL
    */
-  initialize(serverUrl) {
+  async initialize(serverUrl) {
     // if (this.socket) {
     //   console.log("WebSocket already initialized");
     //   return;
     // }
 
-    const token = localStorage.getItem("token");
+    const token = await getToken();
     if (!token) {
       console.error("No token found. Please log in.");
       return;
     }
 
-    const wsUrl = `${serverUrl}?token=${token}`;
+    const wsUrl = `${serverUrl}/?token=${token}`;
     this.socket = new WebSocket(wsUrl);
 
     this.socket.onopen = () => {
