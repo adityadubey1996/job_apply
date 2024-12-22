@@ -55,6 +55,153 @@ class ResumeGenerator {
   };
 
   async createLaTeXContent(data, dateFormat = "MM-YYYY") {
+    //     try {
+    //       let latexContent = `
+    // \\documentclass[11pt,a4paper]{article}
+    // \\usepackage[utf8]{inputenc}
+    // \\usepackage{geometry}
+    // \\geometry{a4paper, margin=1in}
+    // \\usepackage{hyperref}
+    // \\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
+    // \\usepackage{enumitem}
+    // \\setlist{nosep}
+    // \\pagenumbering{gobble}
+    // \\usepackage{fontawesome}
+
+    // \\begin{document}
+
+    // \\begin{center}
+    // \\textbf{\\Huge ${data.personal_information?.name || ""} ${
+    //         data.personal_information?.surname || ""
+    //       }} \\\\
+    // \\vspace{5pt}
+    // \\textit{${data.personal_information?.title || "Technical Lead"}} \\\\
+    // \\vspace{5pt}
+    // \\href{mailto:${data.personal_information?.email || ""}}{${
+    //         data.personal_information?.email || ""
+    //       }} \\\\
+    // \\href{tel:${data.personal_information?.phonePrefix || ""}${
+    //         data.personal_information?.phoneNumber || ""
+    //       }}{${data.personal_information?.phonePrefix || ""}${
+    //         data.personal_information?.phoneNumber || ""
+    //       }} \\\\
+    // \\vspace{5pt}
+    // ${
+    //   data.personal_information?.linkedin
+    //     ? `\\faLinkedin \\href{https://linkedin.com/in/${data.personal_information.linkedin}}{linkedin.com/in/${data.personal_information.linkedin}} \\\\`
+    //     : ""
+    // }
+    // ${
+    //   data.personal_information?.github
+    //     ? `\\faGithub \\href{https://github.com/${data.personal_information.github}}{github.com/${data.personal_information.github}} \\\\`
+    //     : ""
+    // }
+    // \\end{center}
+
+    // \\vspace{10pt}
+
+    // % Professional Summary
+    // \\section*{Professional Summary   \\vspace{10pt}}
+    // ${data.professional_summary?.summary || "No professional summary available."}
+
+    // \\vspace{10pt}
+
+    // % Skills Section
+    // \\section*{Skills   \\vspace{10pt}}
+    // \\begin{itemize}[leftmargin=*]
+    // `;
+    //       if (data.skills?.length) {
+    //         data.skills.forEach((skill) => {
+    //           latexContent += `  \\item ${skill}\n`;
+    //         });
+    //       } else {
+    //         latexContent += "  \\item No skills listed.\n";
+    //       }
+    //       latexContent += `
+    // \\end{itemize}
+
+    // \\vspace{10pt}
+
+    // % Professional Experience
+    // \\section*{Professional Experience   \\vspace{10pt}}
+    // `;
+    //       if (data.experience_details?.length) {
+    //         data.experience_details.forEach((job, index) => {
+    //           const [startDate, endDate] =
+    //             job.employment_period?.split(" - ") || [];
+    //           latexContent += `
+    // \\textbf{${job.position || "N/A"} (${job.company || "N/A"})} \\hfill \\textit{${
+    //             job.location || "N/A"
+    //           } | ${this.formatDate(startDate, dateFormat) || ""} -- ${
+    //             this.formatDate(endDate, dateFormat) || "Present"
+    //           }} \\\\
+    // \\begin{itemize}[leftmargin=*]
+    // `;
+    //           job.key_responsibilities?.forEach((resp) => {
+    //             latexContent += `  \\item ${resp}\n`;
+    //           });
+    //           latexContent += `
+    // \\end{itemize}
+    // `;
+    //           // Add consistent spacing between jobs, but avoid extra space at the end
+    //           if (index < data.experience_details.length - 1) {
+    //             latexContent += "\\vspace{10pt}\n";
+    //           }
+    //         });
+    //       } else {
+    //         latexContent += "No professional experience listed.\n";
+    //       }
+
+    //       // Projects Section
+    //       latexContent += `
+    // \\section*{Projects   \\vspace{10pt}}
+    // `;
+    //       if (data.projects?.length) {
+    //         data.projects.forEach((project) => {
+    //           latexContent += `
+    // \\begin{itemize}[leftmargin=*]
+    // \\item \\textbf{${project.name || "N/A"}}: ${project.description || "N/A"}
+    // `;
+    //           if (project.link) {
+    //             latexContent += `  \\item \\href{${project.link}}{Project Link}\n`;
+    //           }
+    //           latexContent += `
+    // \\end{itemize}
+    // `;
+    //         });
+    //       } else {
+    //         latexContent += "No projects listed.\n";
+    //       }
+
+    //       // Education Section
+    //       latexContent += `
+    // \\section*{Education   \\vspace{10pt}}
+    // `;
+    //       if (data.education_details?.length) {
+    //         data.education_details.forEach((edu) => {
+    //           latexContent += `
+    // \\textbf{${edu.degree || "N/A"}, ${edu.field_of_study || "N/A"}} \\hfill ${
+    //             edu.university || "N/A"
+    //           } \\\\
+    // \\hfill Graduation: ${
+    //             this.formatDate(edu.graduation_year, "YYYY") || "N/A"
+    //           } \\\\
+    // \\vspace{5pt}
+    // `;
+    //         });
+    //       } else {
+    //         latexContent += "No education details listed.\n";
+    //       }
+
+    //       latexContent += `
+    // \\end{document}
+    // `;
+    //       return latexContent;
+    //     } catch (error) {
+    //       console.error("Error creating LaTeX content:", error);
+    //       throw new Error("Failed to create LaTeX content.");
+    //     }
+
     try {
       let latexContent = `
 \\documentclass[11pt,a4paper]{article}
@@ -63,10 +210,8 @@ class ResumeGenerator {
 \\geometry{a4paper, margin=1in}
 \\usepackage{hyperref}
 \\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue}
-\\usepackage{enumitem}
-\\setlist{nosep}
-\\pagenumbering{gobble}
 \\usepackage{fontawesome}
+\\pagenumbering{gobble}
 
 \\begin{document}
 
@@ -101,14 +246,14 @@ ${
 \\vspace{10pt}
 
 % Professional Summary
-\\section*{Professional Summary   \\vspace{10pt}}
+\\section*{Professional Summary}
 ${data.professional_summary?.summary || "No professional summary available."}
 
 \\vspace{10pt}
 
 % Skills Section
-\\section*{Skills   \\vspace{10pt}}
-\\begin{itemize}[leftmargin=*]
+\\section*{Skills}
+\\begin{itemize}
 `;
       if (data.skills?.length) {
         data.skills.forEach((skill) => {
@@ -123,7 +268,7 @@ ${data.professional_summary?.summary || "No professional summary available."}
 \\vspace{10pt}
 
 % Professional Experience
-\\section*{Professional Experience   \\vspace{10pt}}
+\\section*{Professional Experience}
 `;
       if (data.experience_details?.length) {
         data.experience_details.forEach((job, index) => {
@@ -135,7 +280,7 @@ ${data.professional_summary?.summary || "No professional summary available."}
           } | ${this.formatDate(startDate, dateFormat) || ""} -- ${
             this.formatDate(endDate, dateFormat) || "Present"
           }} \\\\
-\\begin{itemize}[leftmargin=*]
+\\begin{itemize}
 `;
           job.key_responsibilities?.forEach((resp) => {
             latexContent += `  \\item ${resp}\n`;
@@ -154,12 +299,12 @@ ${data.professional_summary?.summary || "No professional summary available."}
 
       // Projects Section
       latexContent += `
-\\section*{Projects   \\vspace{10pt}}
+\\section*{Projects}
 `;
       if (data.projects?.length) {
         data.projects.forEach((project) => {
           latexContent += `
-\\begin{itemize}[leftmargin=*]
+\\begin{itemize}
 \\item \\textbf{${project.name || "N/A"}}: ${project.description || "N/A"}
 `;
           if (project.link) {
@@ -175,7 +320,7 @@ ${data.professional_summary?.summary || "No professional summary available."}
 
       // Education Section
       latexContent += `
-\\section*{Education   \\vspace{10pt}}
+\\section*{Education}
 `;
       if (data.education_details?.length) {
         data.education_details.forEach((edu) => {
