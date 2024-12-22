@@ -89,7 +89,7 @@ const generateYamlFile = async (req, res) => {
     await profile.save();
 
     // Clean up the temporary file
-    fs.unlinkSync(tempFilePath);
+    await fs.unlink(tempFilePath);
 
     // Respond with success
     res.status(200).json({
