@@ -282,7 +282,7 @@ export const UploadComponent = ({ onProcessSuccess }) => {
           )}
           {!isConnect && (
             <p className="text-xs text-red-500 mt-2">
-              WebSocket connection is not established.
+              Not Connected to Server kindly refresh.
             </p>
           )}
 

@@ -64,28 +64,31 @@ const register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
+    // Check if email is already in use
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: "Email already in use" });
     }
 
-    const user = await User.findById(req.user.id);
+    // Find the user by ID
+    let user = await User.findById(req.user.id);
 
     if (!user) {
-      return res.status(404).json({ error: "Something Terribly went wrong" });
+      return res.status(404).json({ error: "Something terribly went wrong" });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    user = { ...user, email, name, password: hashedPassword };
-    // const newUser = new User({
-    //   name,
-    //   email,
-    //   password: hashedPassword,
-    // });
+    // Update user details
+    user.name = name;
+    user.email = email;
+    user.password = await bcrypt.hash(password, 10);
 
+    // Save the updated user
     await user.save();
+
+    // Respond with the updated user
     res.status(201).json(user);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };

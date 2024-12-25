@@ -17,6 +17,15 @@ const cloudBucketService = require("./services/bucketService");
 const { setupWebSocket } = require("./services/websocketService");
 const morgan = require("morgan");
 
+// Logging setup
+const requestLogStream = fs.createWriteStream(
+  path.join(__dirname, "request.log"),
+  { flags: "a" }
+);
+const errorLogStream = fs.createWriteStream(path.join(__dirname, "error.log"), {
+  flags: "a",
+});
+
 connectDB();
 // Configure allowed origins and headers
 const allowedOrigins = [
@@ -51,17 +60,56 @@ app.use(
     credentials: true, // If you need to support cookies or authorization headers
   })
 );
-// Create a writable stream for logging errors
-const errorLogStream = fs.createWriteStream(path.join(__dirname, "error.log"), {
-  flags: "a", // Append to the file
-});
-app.use((err, req, res, next) => {
-  morgan(
-    `:method :url :status :res[content-length] - :response-time ms - Error: ${err.message}`,
-    { stream: errorLogStream }
-  )(req, res, () => {});
 
-  console.error(err.stack);
+// Define custom Morgan tokens
+morgan.token("headers", (req) => {
+  try {
+    return JSON.stringify(req.headers);
+  } catch (err) {
+    return "Error retrieving headers";
+  }
+});
+
+morgan.token("body", (req) => {
+  try {
+    return JSON.stringify(req.body);
+  } catch (err) {
+    return "Error retrieving body";
+  }
+});
+
+morgan.token("query", (req) => {
+  try {
+    return JSON.stringify(req.query);
+  } catch (err) {
+    return "Error retrieving query";
+  }
+});
+
+morgan.token("error-stack", (req, res) => {
+  try {
+    return res.errorStack || "No stack trace available";
+  } catch (err) {
+    return "Error retrieving error";
+  }
+});
+
+// Use the custom tokens in your logging format
+app.use(
+  morgan(
+    `[:date[iso]] ":method :url" :status :res[content-length] - :response-time ms
+    Headers: :headers
+    Body: :body
+    Query: :query`,
+    { stream: requestLogStream }
+  )
+);
+
+app.use((err, req, res, next) => {
+  console.error("Global Error Handler:", err.stack);
+  const logMessage = `Error: ${err.message} at : ${req.method} ${req.url}`;
+  errorLogStream.write(`[${new Date().toISOString()}] ${logMessage}\n`);
+
   res.status(500).json({ error: "Something went wrong!" });
 });
 

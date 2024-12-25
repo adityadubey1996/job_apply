@@ -67,8 +67,14 @@ export function RegisterForm() {
           "Well done! You've braved the email-password gauntlet and emerged victorious.",
         variant: "success",
       });
+      navigate("/login");
     } catch (error) {
       console.error("Registration Error:", error); // Error handling is already in the interceptor
+      toast({
+        title: "Error",
+        description: `${error}`,
+        variant: "destructive",
+      });
     }
   }
   const handleGoogleResponse = async (response) => {

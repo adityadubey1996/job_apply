@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const authenticate = async (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1]; // Bearer token
-  console.log("token from auth middelware", token);
   if (!token) {
     return res.status(401).json({ error: "Unauthorized access" });
   }
