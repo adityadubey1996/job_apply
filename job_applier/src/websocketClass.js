@@ -13,11 +13,6 @@ class WebSocketManager {
    * @param {string} serverUrl - The WebSocket server URL
    */
   async initialize(serverUrl) {
-    // if (this.socket) {
-    //   console.log("WebSocket already initialized");
-    //   return;
-    // }
-
     const token = await getToken();
     if (!token) {
       console.error("No token found. Please log in.");

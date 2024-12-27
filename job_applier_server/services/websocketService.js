@@ -81,7 +81,7 @@ const setupWebSocket = (server) => {
           const { fileName, chunk, isLastChunk } = parsedMessage;
           const uniqueString = Date.now();
           const userId = ws.user.id;
-          const uniqueFileName = `${uniqueString}_${fileName}_${userId}`;
+          const uniqueFileName = `${uniqueString}_${userId}_${fileName.trim()}`;
 
           if (!userId) {
             sendToUser(userId, {

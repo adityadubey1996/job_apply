@@ -47,7 +47,6 @@ const generateYaml = async (
 const generateYamlFile = async (req, res) => {
   try {
     const { resumeData } = req.body;
-    console.log(req.body);
     console.log("resumeData", resumeData);
     const { id: userId } = req.user; // Assuming `req.user` is populated by authentication middleware
 
